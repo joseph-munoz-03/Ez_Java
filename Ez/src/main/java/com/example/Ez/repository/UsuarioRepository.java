@@ -16,6 +16,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByDocumentoUser(Long documento);
 
+    Optional<Usuario> findByCedula(Long cedula);
+
     @Query("SELECT u FROM Usuario u WHERE u.email = :email OR u.documentoUser = :documento")
     Optional<Usuario> findByEmailOrDocumento(@Param("email") String email, @Param("documento") Long documento);
 

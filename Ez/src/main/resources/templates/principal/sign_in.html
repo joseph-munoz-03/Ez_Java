@@ -2,51 +2,355 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<title>Registro de usuarios</title>
-<!-- Latest compiled and minified CSS -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro - Ez</title>
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	
+	body {
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		padding: 20px;
+	}
+	
+	.register-container {
+		background: white;
+		padding: 40px;
+		border-radius: 15px;
+		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+		width: 100%;
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	
+	.register-header {
+		text-align: center;
+		margin-bottom: 30px;
+	}
+	
+	.register-header h1 {
+		color: #667eea;
+		font-size: 36px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
+	
+	.register-header p {
+		color: #999;
+		font-size: 14px;
+	}
+	
+	.form-group label {
+		color: #333;
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+	
+	.form-control {
+		border: 2px solid #e0e0e0;
+		border-radius: 8px;
+		padding: 12px;
+		font-size: 14px;
+		transition: all 0.3s ease;
+	}
+	
+	.form-control:focus {
+		border-color: #667eea;
+		box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+	}
+	
+	.error-message {
+		color: #ff6b6b;
+		font-size: 12px;
+		margin-top: 5px;
+		display: none;
+	}
+	
+	.error-message.show {
+		display: block;
+	}
+	
+	.form-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 15px;
+	}
+	
+	.btn-register {
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		border: none;
+		color: white;
+		padding: 12px;
+		font-weight: bold;
+		border-radius: 8px;
+		width: 100%;
+		transition: all 0.3s ease;
+		margin-top: 20px;
+	}
+	
+	.btn-register:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+		color: white;
+		text-decoration: none;
+	}
+	
+	.btn-register:active {
+		transform: translateY(0);
+	}
+	
+	.register-footer {
+		text-align: center;
+		margin-top: 20px;
+	}
+	
+	.register-footer a {
+		color: #667eea;
+		text-decoration: none;
+		font-weight: 600;
+	}
+	
+	.register-footer a:hover {
+		text-decoration: underline;
+	}
+	
+	.alert {
+		border-radius: 8px;
+		margin-bottom: 20px;
+	}
+	
+	.back-btn {
+		display: inline-block;
+		margin-bottom: 20px;
+		color: white;
+		text-decoration: none;
+		font-size: 14px;
+	}
+	
+	.back-btn:hover {
+		text-decoration: underline;
+		color: white;
+	}
+	
+	@media (max-width: 600px) {
+		.form-row {
+			grid-template-columns: 1fr;
+		}
+		
+		.register-container {
+			padding: 20px;
+		}
+	}
+</style>
 </head>
 <body>
-
-
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registro y
-					inicio de sesión</a>
-			</div>
+	<div class="register-container">
+		<a href="/" class="back-btn">← Volver</a>
+		
+		<div class="register-header">
+			<h1>E</h1>
+			<p>Crear Cuenta</p>
 		</div>
-	</nav>
-
-	<br>
-	<br>
-
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div th:if="${param.exito}">
-					<div class="alert alert-info">Se ha registrado exitosamente a
-						la aplicación</div>
+		
+		<div th:if="${success}" class="alert alert-success" role="alert">
+			¡Registro exitoso! <a href="/login">Inicia sesión aquí</a>
+		</div>
+		
+		<div th:if="${error}" class="alert alert-danger" role="alert">
+			<strong>Error:</strong> <span th:text="${error}"></span>
+		</div>
+		
+		<form id="registerForm" method="post" th:action="@{/signin}" novalidate>
+			
+			<!-- Nombre y Apellido -->
+			<div class="form-row">
+				<div class="form-group">
+					<label for="nombre">Nombre:</label>
+					<input type="text" class="form-control" id="nombre" name="nombre"
+						placeholder="Tu nombre" required>
+					<div class="error-message" id="nombreError"></div>
 				</div>
-
-				<h1>Regístrate</h1>
-				<form th:action="@{/registro}" method="post" th:object="${usuario}">
+				
+				<div class="form-group">
+					<label for="apellido">Apellido:</label>
+					<input type="text" class="form-control" id="apellido" name="apellido"
+						placeholder="Tu apellido" required>
+					<div class="error-message" id="apellidoError"></div>
+				</div>
+			</div>
+			
+			<!-- Cédula -->
+			<div class="form-group">
+				<label for="cedula">Número de Cédula:</label>
+				<input type="number" class="form-control" id="cedula" name="cedula"
+					placeholder="Ej: 1234567890" required>
+				<div class="error-message" id="cedulaError"></div>
+			</div>
+			
+			<!-- Email -->
+			<div class="form-group">
+				<label for="email">Correo Electrónico:</label>
+				<input type="email" class="form-control" id="email" name="email"
+					placeholder="tu_correo@gmail.com" required>
+				<div class="error-message" id="emailError"></div>
+			</div>
+			
+			<!-- Contraseña -->
+			<div class="form-group">
+				<label for="password">Contraseña:</label>
+				<input type="password" class="form-control" id="password" name="password"
+					placeholder="8 a 16 caracteres" required>
+				<div class="error-message" id="passwordError"></div>
+			</div>
+			
+			<!-- Tipo de Perfil y Género -->
+			<div class="form-row">
+				<div class="form-group">
+					<label for="tipoPerfil">Tipo de Perfil:</label>
+					<select class="form-control" id="tipoPerfil" name="tipoPerfil" required>
+						<option value="">Selecciona un perfil</option>
+						<option value="1">Ingeniero</option>
+						<option value="2">Cliente</option>
+					</select>
+					<div class="error-message" id="tipoPerfilError"></div>
+				</div>
+				
+				<div class="form-group">
+					<label for="genero">Género:</label>
+					<select class="form-control" id="genero" name="genero" required>
+						<option value="">Selecciona un género</option>
+						<option value="1">Masculino</option>
+						<option value="2">Femenino</option>
+						<option value="3">Prefiero no decirlo</option>
+						<option value="4">Otro</option>
+					</select>
+					<div class="error-message" id="generoError"></div>
+				</div>
+			</div>
+			
+			<!-- Fecha de Nacimiento -->
+			<div class="form-group">
+				<label for="fechaNacimiento">Fecha de Nacimiento:</label>
+				<input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
+				<div class="error-message" id="fechaError"></div>
+			</div>
+			
+			<button type="submit" class="btn-register">Registrarse</button>
+		</form>
+		
+		<div class="register-footer">
+			¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a>
+		</div>
+	</div>
+	
+	<script>
+		document.getElementById('registerForm').addEventListener('submit', function(e) {
+			e.preventDefault();
+			
+			const nombre = document.getElementById('nombre').value.trim();
+			const apellido = document.getElementById('apellido').value.trim();
+			const cedula = document.getElementById('cedula').value.trim();
+			const email = document.getElementById('email').value.trim();
+			const password = document.getElementById('password').value;
+			const tipoPerfil = document.getElementById('tipoPerfil').value;
+			const genero = document.getElementById('genero').value;
+			const fechaNacimiento = document.getElementById('fechaNacimiento').value;
+			
+			let isValid = true;
+			
+			// Validar nombre
+			if (!nombre || nombre.length < 2) {
+				document.getElementById('nombreError').textContent = 'El nombre debe tener al menos 2 caracteres';
+				document.getElementById('nombreError').classList.add('show');
+				isValid = false;
+			} else {
+				document.getElementById('nombreError').classList.remove('show');
+			}
+			
+			// Validar apellido
+			if (!apellido || apellido.length < 2) {
+				document.getElementById('apellidoError').textContent = 'El apellido debe tener al menos 2 caracteres';
+				document.getElementById('apellidoError').classList.add('show');
+				isValid = false;
+			} else {
+				document.getElementById('apellidoError').classList.remove('show');
+			}
+			
+			// Validar cédula
+			if (!cedula || cedula.length < 5) {
+				document.getElementById('cedulaError').textContent = 'La cédula debe ser válida';
+				document.getElementById('cedulaError').classList.add('show');
+				isValid = false;
+			} else {
+				document.getElementById('cedulaError').classList.remove('show');
+			}
+			
+			// Validar email
+			if (!email) {
+				document.getElementById('emailError').textContent = 'El correo es obligatorio';
+				document.getElementById('emailError').classList.add('show');
+				isValid = false;
+			} else if (!email.endsWith('@gmail.com')) {
+				document.getElementById('emailError').textContent = 'El correo debe ser @gmail.com';
+				document.getElementById('emailError').classList.add('show');
+				isValid = false;
+			} else {
+				document.getElementById('emailError').classList.remove('show');
+			}
+			
+			// Validar contraseña
+			if (!password) {
+				document.getElementById('passwordError').textContent = 'La contraseña es obligatoria';
+				document.getElementById('passwordError').classList.add('show');
+				isValid = false;
+			} else if (password.length < 8 || password.length > 16) {
+				document.getElementById('passwordError').textContent = 'La contraseña debe tener entre 8 y 16 caracteres';
+				document.getElementById('passwordError').classList.add('show');
+				isValid = false;
+			} else {
+				document.getElementById('passwordError').classList.remove('show');
+			}
+			
+			// Validar tipo de perfil
+			if (!tipoPerfil) {
+				document.getElementById('tipoPerfilError').textContent = 'Selecciona un tipo de perfil';
+				document.getElementById('tipoPerfilError').classList.add('show');
+				isValid = false;
+			} else {
+				document.getElementById('tipoPerfilError').classList.remove('show');
+			}
+			
+			// Validar género
+			if (!genero) {
+				document.getElementById('generoError').textContent = 'Selecciona un género';
+				document.getElementById('generoError').classList.add('show');
+				isValid = false;
+			} else {
+				document.getElementById('generoError').classList.remove('show');
+			}
+			
+			// Validar fecha de nacimiento
+			if (!fechaNacimiento) {
+				document.getElementById('fechaError').textContent = 'La fecha de nacimiento es obligatoria';
+				document.getElementById('fechaError').classList.add('show');
+				isValid = false;
+			} else {
+				document.getElementById('fechaError').classList.remove('show');
+			}
+			
+			if (isValid) {
+				this.submit();
+			}
+		});
+	</script>
+</body>
+</html>
 					<div class="form-group">
 						<label class="control-label" for="nombre">Nombre : </label> <input
 							id="nombre" type="text" class="form-control" th:field="*{nombre}"

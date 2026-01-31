@@ -3,83 +3,87 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <meta charset="utf-8">
-<title>Inicio</title>
-<!-- Latest compiled and minified CSS -->
+<title>Ez - Sistema de Gestión</title>
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	
+	body {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
+	
+	.container-center {
+		text-align: center;
+		background: rgba(255, 255, 255, 0.1);
+		padding: 60px 40px;
+		border-radius: 20px;
+		backdrop-filter: blur(10px);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+	}
+	
+	.letter-e {
+		font-size: 100px;
+		font-weight: bold;
+		color: white;
+		text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+		margin-bottom: 40px;
+	}
+	
+	.btn-custom {
+		margin: 10px;
+		padding: 15px 40px;
+		font-size: 18px;
+		font-weight: bold;
+		border-radius: 10px;
+		transition: all 0.3s ease;
+		text-decoration: none;
+		display: inline-block;
+	}
+	
+	.btn-login {
+		background-color: #ff6b6b;
+		color: white;
+		border: 2px solid white;
+	}
+	
+	.btn-login:hover {
+		background-color: #ff5252;
+		color: white;
+		transform: translateY(-3px);
+		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+	}
+	
+	.btn-signin {
+		background-color: #4ecdc4;
+		color: white;
+		border: 2px solid white;
+	}
+	
+	.btn-signin:hover {
+		background-color: #45b7b1;
+		color: white;
+		transform: translateY(-3px);
+		box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+	}
+</style>
 </head>
 <body>
-
-
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registro y
-					inicio de sesión</a>
-			</div>
-			<div id="navbar" class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar
-							sesión</a></li>
-				</ul>
-			</div>
+	<div class="container-center">
+		<div class="letter-e">E</div>
+		<div>
+			<a href="/login" class="btn-custom btn-login">Iniciar Sesión</a>
+			<a href="/signin" class="btn-custom btn-signin">Registrarse</a>
 		</div>
-	</nav>
-
-	<br>
-	<br>
-
-	<div class="container">
-		<h1>Registro e inicio de sesión con Spring Boot + Spring Security
-			+ Thymeleaf + Hibernate + MySQL y Bootstrap</h1>
-		<br>
-		<h4>
-			Bienvenido <span sec:authentication="principal.username"></span>
-		</h4>
-
-		<br> <br>
-
-		<table class="table table-striped table-bordered">
-			<thead class="table-dark">
-				<tr>
-					<th>ID</th>
-					<th>Nombre</th>
-					<th>Apellido</th>
-					<th>Email</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="usuario : ${usuarios}">
-					<td th:text="${usuario.id}">ID</td>
-					<td th:text="${usuario.nombre}">ID</td>
-					<td th:text="${usuario.apellido}">ID</td>
-					<td th:text="${usuario.email}">ID</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
-
-
-
-	<!-- Latest compiled and minified JavaScript -->
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-		crossorigin="anonymous"></script>
 </body>
 </html>

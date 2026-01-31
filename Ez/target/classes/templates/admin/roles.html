@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Gestionar Roles - Ez</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+	.sidebar {
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		min-height: 100vh;
+		padding: 20px 0;
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 250px;
+		color: white;
+	}
+	
+	.main-content {
+		margin-left: 250px;
+		padding: 20px;
+	}
+	
+	.sidebar .nav-link {
+		color: rgba(255, 255, 255, 0.8);
+		padding: 15px 20px;
+		text-decoration: none;
+	}
+	
+	.sidebar .nav-link:hover {
+		color: white;
+	}
+</style>
+</head>
+<body>
+	<div class="sidebar">
+		<div style="text-align: center; padding: 20px; font-size: 40px; font-weight: bold; margin-bottom: 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">E</div>
+		<nav class="nav flex-column">
+			<a href="/admin/dashboard" class="nav-link">Dashboard</a>
+			<a href="/admin/usuarios" class="nav-link">Usuarios</a>
+			<a href="/admin/roles" class="nav-link active">Roles</a>
+			<a href="/admin/reportes" class="nav-link">Reportes</a>
+			<a href="/login/logout" class="nav-link">Cerrar Sesión</a>
+		</nav>
+	</div>
+	
+	<div class="main-content">
+		<h1>Gestionar Roles</h1>
+		<p>Aquí puedes administrar los roles del sistema.</p>
+	</div>
+</body>
+</html>

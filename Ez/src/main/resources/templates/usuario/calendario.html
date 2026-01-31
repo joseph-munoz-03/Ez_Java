@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Calendario - Ez</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+	:root {
+		--primary-color: #28a745;
+		--secondary-color: #1e7e34;
+	}
+	
+	body {
+		background-color: #f8f9fa;
+	}
+	
+	.sidebar {
+		background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+		min-height: 100vh;
+		padding: 20px 0;
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 250px;
+		color: white;
+	}
+	
+	.sidebar .logo {
+		text-align: center;
+		padding: 20px;
+		font-size: 40px;
+		font-weight: bold;
+		margin-bottom: 30px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	}
+	
+	.sidebar .nav-link {
+		color: rgba(255, 255, 255, 0.8);
+		padding: 15px 20px;
+		text-decoration: none;
+	}
+	
+	.sidebar .nav-link.active {
+		background-color: rgba(255, 255, 255, 0.2);
+		color: white;
+	}
+	
+	.main-content {
+		margin-left: 250px;
+		padding: 20px;
+	}
+	
+	.topbar {
+		background: white;
+		padding: 20px;
+		margin-bottom: 20px;
+		border-radius: 10px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+	}
+	
+	.calendar-container {
+		background: white;
+		border-radius: 10px;
+		padding: 20px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+	}
+	
+	.calendar-header {
+		text-align: center;
+		margin-bottom: 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	
+	.calendar-grid {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		gap: 10px;
+	}
+	
+	.day-header {
+		background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+		color: white;
+		text-align: center;
+		padding: 10px;
+		border-radius: 5px;
+	}
+	
+	.day-cell {
+		border: 1px solid #ddd;
+		padding: 10px;
+		min-height: 80px;
+		border-radius: 5px;
+		background: #f9f9f9;
+	}
+</style>
+</head>
+<body>
+	<div class="sidebar">
+		<div class="logo">E</div>
+		<nav class="nav flex-column">
+			<a href="/usuario/dashboard" class="nav-link">Principal</a>
+			<a href="/usuario/perfil" class="nav-link">Perfil</a>
+			<a href="/usuario/chat" class="nav-link">Chat</a>
+			<a href="/usuario/marketplace" class="nav-link">Marketplace</a>
+			<a href="/usuario/contratos" class="nav-link">Contratos</a>
+			<a href="/usuario/calendario" class="nav-link active">Calendario</a>
+			<a href="/logout" class="nav-link">Cerrar Sesión</a>
+		</nav>
+	</div>
+	
+	<div class="main-content">
+		<div class="topbar">
+			<h1><i class="fas fa-calendar"></i> Calendario</h1>
+		</div>
+		
+		<div class="calendar-container">
+			<div class="calendar-header">
+				<button class="btn btn-sm btn-outline-primary"><i class="fas fa-chevron-left"></i></button>
+				<h3>Diciembre 2024</h3>
+				<button class="btn btn-sm btn-outline-primary"><i class="fas fa-chevron-right"></i></button>
+			</div>
+			
+			<div class="calendar-grid">
+				<div class="day-header">Lun</div>
+				<div class="day-header">Mar</div>
+				<div class="day-header">Mié</div>
+				<div class="day-header">Jue</div>
+				<div class="day-header">Vie</div>
+				<div class="day-header">Sáb</div>
+				<div class="day-header">Dom</div>
+				
+				<div class="day-cell"></div>
+				<div class="day-cell"></div>
+				<div class="day-cell"></div>
+				<div class="day-cell"></div>
+				<div class="day-cell"></div>
+				<div class="day-cell"></div>
+				<div class="day-cell">1</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

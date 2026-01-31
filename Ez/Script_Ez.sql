@@ -47,4 +47,37 @@ INSERT IGNORE INTO roles_ez (tipo_rol, descripcion) VALUES
 ('ingeniero', 'Ingeniero de sistemas'),
 ('usuario', 'Usuario - Creador de publicaciones');
 
+-- Insertar usuarios de prueba (uno por cada rol)
+
+-- Usuario ADMINISTRADOR
+INSERT IGNORE INTO users_ez 
+(nombre, apellido, documento_user, email, contrasena, fecha_nacimiento, genero, telefono, estado) 
+VALUES 
+('Carlos', 'Administrador', 1001, 'admin@gmail.com', 'Admin1234', '1985-06-15', 'Masculino', '3001234567', 'activo');
+
+-- Usuario INGENIERO
+INSERT IGNORE INTO users_ez 
+(nombre, apellido, documento_user, email, contrasena, fecha_nacimiento, genero, telefono, estado) 
+VALUES 
+('Juan', 'Ingeniero', 1002, 'ingeniero@gmail.com', 'Ingeniero1234', '1990-08-22', 'Masculino', '3001234568', 'activo');
+
+-- Usuario CLIENTE/USUARIO
+INSERT IGNORE INTO users_ez 
+(nombre, apellido, documento_user, email, contrasena, fecha_nacimiento, genero, telefono, estado) 
+VALUES 
+('María', 'Cliente', 1003, 'cliente@gmail.com', 'Cliente1234', '1995-12-10', 'Femenino', '3001234569', 'activo');
+
+-- Asignar roles a los usuarios
+INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
+SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
+WHERE u.email = 'admin@gmail.com' AND r.tipo_rol = 'admin';
+
+INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
+SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
+WHERE u.email = 'ingeniero@gmail.com' AND r.tipo_rol = 'ingeniero';
+
+INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
+SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
+WHERE u.email = 'cliente@gmail.com' AND r.tipo_rol = 'usuario';
+
 
