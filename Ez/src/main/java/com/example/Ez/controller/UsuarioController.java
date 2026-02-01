@@ -18,11 +18,6 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     // ===== LOGIN =====
-    @GetMapping("/login")
-    public String mostrarLogin() {
-        return "principal/login";
-    }
-
     @PostMapping("/login")
     public String procesarLogin(@RequestParam String email, 
                                 @RequestParam String password,
@@ -78,11 +73,6 @@ public class UsuarioController {
     }
 
     // ===== REGISTRO =====
-    @GetMapping("/signin")
-    public String mostrarRegistro() {
-        return "principal/sign_in";
-    }
-
     @PostMapping("/signin")
     public String procesarRegistro(@RequestParam String nombre,
                                    @RequestParam String apellido,

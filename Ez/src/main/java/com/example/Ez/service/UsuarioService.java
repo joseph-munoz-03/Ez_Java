@@ -59,7 +59,7 @@ public class UsuarioService {
         }
         
         // Verificar si la cédula ya existe
-        if (cedula != null && usuarioRepository.findByCedula(cedula).isPresent()) {
+        if (cedula != null && usuarioRepository.findByDocumentoUser(cedula).isPresent()) {
             return null;
         }
         
@@ -114,7 +114,7 @@ public class UsuarioService {
      */
     public boolean esAdministrador(Usuario usuario) {
         return usuario.getRoles().stream()
-                .anyMatch(rol -> rol.getTipo_rol().equals("admin"));
+                .anyMatch(rol -> rol.getTipoRol().toString().equals("admin"));
     }
 
     /**
@@ -124,7 +124,7 @@ public class UsuarioService {
      */
     public boolean esIngeniero(Usuario usuario) {
         return usuario.getRoles().stream()
-                .anyMatch(rol -> rol.getTipo_rol().equals("ingeniero"));
+                .anyMatch(rol -> rol.getTipoRol().toString().equals("ingeniero"));
     }
 
     /**
