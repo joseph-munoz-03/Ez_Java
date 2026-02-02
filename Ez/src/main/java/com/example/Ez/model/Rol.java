@@ -74,18 +74,8 @@ public class Rol {
     }
 
     public enum TipoRol {
-        ADMIN("admin"),
-        INGENIERO("ingeniero"),
-        USUARIO("usuario");
-
-        private final String valor;
-
-        TipoRol(String valor) {
-            this.valor = valor;
-        }
-
-        public String getValor() {
-            return valor;
-        }
+        admin,
+        ingeniero,
+        usuario;
     }
 }

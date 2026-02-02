@@ -24,19 +24,13 @@ public class UsuarioController {
                                 Model model,
                                 HttpSession session) {
         
-        // Validar formato del email
-        if (!usuarioService.emailValido(email)) {
-            model.addAttribute("error", "El correo debe ser @gmail.com");
-            return "principal/login";
-        }
-        
         // Validar longitud de contraseña
         if (!usuarioService.contrasenaValida(password)) {
             model.addAttribute("error", "La contraseña debe tener entre 8 y 16 caracteres");
             return "principal/login";
         }
         
-        // Autenticar usuario
+        // Autenticar usuario (solo por email)
         Optional<Usuario> usuarioOpt = usuarioService.autenticar(email, password);
         
         if (usuarioOpt.isEmpty()) {

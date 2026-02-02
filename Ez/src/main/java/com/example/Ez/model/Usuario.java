@@ -49,14 +49,14 @@ public class Usuario {
     private LocalDate fechaNacimiento;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "ENUM('Femenino', 'Masculino', 'No_Especificado', 'Otro') DEFAULT 'No_Especificado'")
+    @Column(name = "genero", columnDefinition = "VARCHAR(20)")
     private Genero genero;
 
     @Column(length = 20)
     private String telefono;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "ENUM('activo', 'inactivo', 'bloqueado') DEFAULT 'activo'")
+    @Column(name = "estado", columnDefinition = "VARCHAR(20)")
     private Estado estado;
 
     @Column(name = "fecha_registro", nullable = false, updatable = false)
@@ -64,6 +64,12 @@ public class Usuario {
 
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
+
+    @Column(name = "fecha_suspension")
+    private LocalDate fechaSuspension;
+
+    @Column(name = "dias_suspension")
+    private Integer diasSuspension;
 
     @ManyToMany(fetch = jakarta.persistence.FetchType.EAGER)
     @JoinTable(
@@ -78,10 +84,10 @@ public class Usuario {
         this.fechaRegistro = LocalDateTime.now();
         this.fechaActualizacion = LocalDateTime.now();
         if (this.genero == null) {
-            this.genero = Genero.NO_ESPECIFICADO;
+            this.genero = Genero.No_Especificado;
         }
         if (this.estado == null) {
-            this.estado = Estado.ACTIVO;
+            this.estado = Estado.activo;
         }
     }
 
@@ -196,35 +202,33 @@ public class Usuario {
     }
 
     public enum Genero {
-        FEMENINO("Femenino"),
-        MASCULINO("Masculino"),
-        NO_ESPECIFICADO("No_Especificado"),
-        OTRO("Otro");
-
-        private final String valor;
-
-        Genero(String valor) {
-            this.valor = valor;
-        }
-
-        public String getValor() {
-            return valor;
-        }
+        Femenino,
+        Masculino,
+        No_Especificado,
+        Otro;
     }
 
     public enum Estado {
-        ACTIVO("activo"),
-        INACTIVO("inactivo"),
-        BLOQUEADO("bloqueado");
+        activo,
+        inactivo,
+        baneado,
+        suspendido;
+    }
 
-        private final String valor;
+    // Getters y Setters para suspensión
+    public LocalDate getFechaSuspension() {
+        return fechaSuspension;
+    }
 
-        Estado(String valor) {
-            this.valor = valor;
-        }
+    public void setFechaSuspension(LocalDate fechaSuspension) {
+        this.fechaSuspension = fechaSuspension;
+    }
 
-        public String getValor() {
-            return valor;
-        }
+    public Integer getDiasSuspension() {
+        return diasSuspension;
+    }
+
+    public void setDiasSuspension(Integer diasSuspension) {
+        this.diasSuspension = diasSuspension;
     }
 }

@@ -101,6 +101,7 @@
 		border-radius: 5px;
 		transition: all 0.3s ease;
 		text-decoration: none;
+		cursor: pointer;
 	}
 	
 	.btn-custom:hover {
@@ -108,6 +109,60 @@
 		text-decoration: none;
 		transform: translateY(-2px);
 		box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+	}
+
+	.search-filters {
+		background: white;
+		padding: 20px;
+		margin-bottom: 20px;
+		border-radius: 10px;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+	}
+
+	.search-filters .form-row {
+		align-items: flex-end;
+	}
+
+	.badge-estado {
+		padding: 8px 12px;
+		border-radius: 20px;
+		font-size: 0.85rem;
+		font-weight: bold;
+	}
+
+	.badge-activo {
+		background-color: #28a745;
+		color: white;
+	}
+
+	.badge-inactivo {
+		background-color: #6c757d;
+		color: white;
+	}
+
+	.badge-baneado {
+		background-color: #dc3545;
+		color: white;
+	}
+
+	.badge-suspendido {
+		background-color: #ffc107;
+		color: black;
+	}
+
+	.modal-header {
+		background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+		color: white;
+	}
+
+	.loading {
+		display: none;
+		text-align: center;
+		padding: 20px;
+	}
+
+	.spinner {
+		display: inline-block;
 	}
 </style>
 </head>
@@ -144,39 +199,391 @@
 		<div class="topbar">
 			<h1><i class="fas fa-users-cog"></i> Gestión de Usuarios</h1>
 			<div>
-				<button class="btn-custom" onclick="alert('Agregar nuevo usuario')">
+				<button class="btn-custom" onclick="abrirModalNuevoUsuario()">
 					<i class="fas fa-user-plus"></i> Nuevo Usuario
 				</button>
 			</div>
 		</div>
+
+		<!-- Filtros de búsqueda -->
+		<div class="search-filters">
+			<div class="form-row">
+				<div class="form-group col-md-8">
+					<label for="searchInput"><i class="fas fa-search"></i> Buscar usuario:</label>
+					<input type="text" class="form-control" id="searchInput" placeholder="Escriba el usuario que busca (nombre, email, cédula, etc.)" onkeyup="filtrarUsuarios()">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="filterType">Filtrar por:</label>
+					<select class="form-control" id="filterType" onchange="filtrarUsuarios()">
+						<option value="nombre">Nombre</option>
+						<option value="email">Email</option>
+						<option value="cedula">Cédula</option>
+						<option value="perfil">Perfil</option>
+						<option value="genero">Género</option>
+						<option value="estado">Estado</option>
+					</select>
+				</div>
+			</div>
+		</div>
 		
+		<!-- Tabla de usuarios -->
 		<div class="table-responsive">
-			<table class="table table-striped table-hover">
+			<div class="loading" id="loadingSpinner">
+				<div class="spinner-border" role="status">
+					<span class="sr-only">Cargando...</span>
+				</div>
+			</div>
+			<table class="table table-striped table-hover" id="usuariosTable">
 				<thead class="table-dark">
 					<tr>
 						<th>ID</th>
 						<th>Nombre</th>
+						<th>Cédula</th>
 						<th>Email</th>
-						<th>Rol</th>
+						<th>Género</th>
+						<th>Perfil</th>
 						<th>Estado</th>
 						<th>Acciones</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>Juan Pérez</td>
-						<td>juan@gmail.com</td>
-						<td><span class="badge badge-primary">Ingeniero</span></td>
-						<td><span class="badge badge-success">Activo</span></td>
-						<td>
-							<button class="btn btn-sm btn-info">Editar</button>
-							<button class="btn btn-sm btn-danger">Eliminar</button>
-						</td>
-					</tr>
+				<tbody id="usuariosTableBody">
 				</tbody>
 			</table>
 		</div>
 	</div>
+
+	<!-- Modal para editar usuario -->
+	<div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Editar Usuario</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form id="formEditarUsuario">
+						<input type="hidden" id="usuarioIdEdit">
+						<div class="form-group">
+							<label for="nombreEdit">Nombre:</label>
+							<input type="text" class="form-control" id="nombreEdit">
+						</div>
+						<div class="form-group">
+							<label for="apellidoEdit">Apellido:</label>
+							<input type="text" class="form-control" id="apellidoEdit">
+						</div>
+						<div class="form-group">
+							<label for="emailEdit">Email:</label>
+							<input type="email" class="form-control" id="emailEdit">
+						</div>
+						<div class="form-group">
+							<label for="telefonoEdit">Teléfono:</label>
+							<input type="text" class="form-control" id="telefonoEdit">
+						</div>
+						<div class="form-group">
+							<label for="generoEdit">Género:</label>
+							<select class="form-control" id="generoEdit">
+								<option value="">Seleccionar</option>
+								<option value="Masculino">Masculino</option>
+								<option value="Femenino">Femenino</option>
+								<option value="No_Especificado">No Especificado</option>
+								<option value="Otro">Otro</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="estadoEdit">Estado:</label>
+							<select class="form-control" id="estadoEdit">
+								<option value="activo">Activo</option>
+								<option value="inactivo">Inactivo</option>
+								<option value="baneado">Baneado</option>
+								<option value="suspendido">Suspendido</option>
+							</select>
+						</div>
+						<div class="form-group" id="diasSuspensionGroup" style="display: none;">
+							<label for="diasSuspensionEdit">Días de Suspensión:</label>
+							<input type="number" class="form-control" id="diasSuspensionEdit" min="1">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary" onclick="guardarEdicionUsuario()">Guardar Cambios</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal para suspender usuario -->
+	<div class="modal fade" id="modalSuspenderUsuario" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Suspender Usuario</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<p>¿Cuántos días desea suspender a este usuario?</p>
+					<input type="hidden" id="usuarioIdSuspender">
+					<div class="form-group">
+						<label for="diasSuspension">Días:</label>
+						<input type="number" class="form-control" id="diasSuspension" min="1" value="7">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-warning" onclick="ejecutarSuspender()">Suspender</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+		let usuariosData = [];
+
+		// Cargar usuarios al iniciar
+		document.addEventListener('DOMContentLoaded', function() {
+			cargarUsuarios();
+		});
+
+		function cargarUsuarios() {
+			$('#loadingSpinner').show();
+			fetch('/admin/api/usuarios')
+				.then(response => response.json())
+				.then(data => {
+					usuariosData = data;
+					mostrarUsuarios(data);
+					$('#loadingSpinner').hide();
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					alert('Error al cargar usuarios');
+					$('#loadingSpinner').hide();
+				});
+		}
+
+		function mostrarUsuarios(usuarios) {
+			const tbody = document.getElementById('usuariosTableBody');
+			tbody.innerHTML = '';
+
+			if (usuarios.length === 0) {
+				tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">No hay usuarios registrados</td></tr>';
+				return;
+			}
+
+			usuarios.forEach(usuario => {
+				const rol = usuario.roles && usuario.roles.length > 0 ? usuario.roles[0].tipoRol : 'N/A';
+				const estadoBadge = obtenerBadgeEstado(usuario.estado);
+				
+				const row = `<tr>
+					<td>${usuario.id}</td>
+					<td>${usuario.nombre} ${usuario.apellido}</td>
+					<td>${usuario.documentoUser || 'N/A'}</td>
+					<td>${usuario.email}</td>
+					<td>${usuario.genero || 'N/A'}</td>
+					<td><span class="badge badge-info">${rol}</span></td>
+					<td>${estadoBadge}</td>
+					<td>
+						<button class="btn btn-sm btn-info" onclick="abrirModalEditar(${usuario.id})" title="Editar">
+							<i class="fas fa-edit"></i>
+						</button>
+						<button class="btn btn-sm btn-warning" onclick="abrirModalSuspender(${usuario.id})" title="Suspender">
+							<i class="fas fa-pause-circle"></i>
+						</button>
+						${usuario.estado === 'suspendido' ? 
+							`<button class="btn btn-sm btn-success" onclick="reactivarUsuario(${usuario.id})" title="Reactivar">
+								<i class="fas fa-play-circle"></i>
+							</button>` : ''}
+						${usuario.estado !== 'baneado' ? 
+							`<button class="btn btn-sm btn-danger" onclick="banearUsuario(${usuario.id})" title="Banear">
+								<i class="fas fa-ban"></i>
+							</button>` : ''}
+						<button class="btn btn-sm btn-dark" onclick="eliminarUsuario(${usuario.id})" title="Inactivar">
+							<i class="fas fa-trash"></i>
+						</button>
+					</td>
+				</tr>`;
+				tbody.innerHTML += row;
+			});
+		}
+
+		function obtenerBadgeEstado(estado) {
+			let clase = 'badge-estado ';
+			switch(estado) {
+				case 'activo':
+					clase += 'badge-activo';
+					break;
+				case 'inactivo':
+					clase += 'badge-inactivo';
+					break;
+				case 'baneado':
+					clase += 'badge-baneado';
+					break;
+				case 'suspendido':
+					clase += 'badge-suspendido';
+					break;
+				default:
+					clase += 'badge-secondary';
+			}
+			return `<span class="${clase}">${estado.toUpperCase()}</span>`;
+		}
+
+		function filtrarUsuarios() {
+			const criterio = document.getElementById('searchInput').value.trim();
+			const filtroTipo = document.getElementById('filterType').value;
+
+			if (!criterio) {
+				mostrarUsuarios(usuariosData);
+				return;
+			}
+
+			fetch(`/admin/api/usuarios/filtrar?criterio=${encodeURIComponent(criterio)}&filtroTipo=${filtroTipo}`)
+				.then(response => response.json())
+				.then(data => mostrarUsuarios(data))
+				.catch(error => console.error('Error:', error));
+		}
+
+		function abrirModalEditar(usuarioId) {
+			const usuario = usuariosData.find(u => u.id === usuarioId);
+			if (usuario) {
+				document.getElementById('usuarioIdEdit').value = usuario.id;
+				document.getElementById('nombreEdit').value = usuario.nombre;
+				document.getElementById('apellidoEdit').value = usuario.apellido;
+				document.getElementById('emailEdit').value = usuario.email;
+				document.getElementById('telefonoEdit').value = usuario.telefono || '';
+				document.getElementById('generoEdit').value = usuario.genero || '';
+				document.getElementById('estadoEdit').value = usuario.estado;
+
+				// Mostrar campo de días si está suspendido
+				if (usuario.estado === 'suspendido') {
+					document.getElementById('diasSuspensionGroup').style.display = 'block';
+					document.getElementById('diasSuspensionEdit').value = usuario.diasSuspension || 7;
+				} else {
+					document.getElementById('diasSuspensionGroup').style.display = 'none';
+				}
+
+				$('#modalEditarUsuario').modal('show');
+			}
+		}
+
+		function guardarEdicionUsuario() {
+			const usuarioId = document.getElementById('usuarioIdEdit').value;
+			const params = new URLSearchParams({
+				nombre: document.getElementById('nombreEdit').value,
+				apellido: document.getElementById('apellidoEdit').value,
+				email: document.getElementById('emailEdit').value,
+				telefono: document.getElementById('telefonoEdit').value,
+				genero: document.getElementById('generoEdit').value,
+				estado: document.getElementById('estadoEdit').value
+			});
+
+			fetch(`/admin/api/usuarios/${usuarioId}?${params}`, {
+				method: 'PUT'
+			})
+			.then(response => response.json())
+			.then(data => {
+				alert('Usuario actualizado exitosamente');
+				$('#modalEditarUsuario').modal('hide');
+				cargarUsuarios();
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert('Error al actualizar usuario');
+			});
+		}
+
+		function abrirModalSuspender(usuarioId) {
+			document.getElementById('usuarioIdSuspender').value = usuarioId;
+			document.getElementById('diasSuspension').value = 7;
+			$('#modalSuspenderUsuario').modal('show');
+		}
+
+		function ejecutarSuspender() {
+			const usuarioId = document.getElementById('usuarioIdSuspender').value;
+			const dias = document.getElementById('diasSuspension').value;
+
+			fetch(`/admin/api/usuarios/${usuarioId}/suspender?dias=${dias}`, {
+				method: 'POST'
+			})
+			.then(response => response.json())
+			.then(data => {
+				alert(`Usuario suspendido por ${dias} días`);
+				$('#modalSuspenderUsuario').modal('hide');
+				cargarUsuarios();
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert('Error al suspender usuario');
+			});
+		}
+
+		function reactivarUsuario(usuarioId) {
+			if (confirm('¿Desea reactivar este usuario?')) {
+				fetch(`/admin/api/usuarios/${usuarioId}/reactivar`, {
+					method: 'POST'
+				})
+				.then(response => response.json())
+				.then(data => {
+					alert('Usuario reactivado exitosamente');
+					cargarUsuarios();
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					alert('Error al reactivar usuario');
+				});
+			}
+		}
+
+		function banearUsuario(usuarioId) {
+			if (confirm('¿Está seguro de que desea banear este usuario? Esta acción no se puede deshacer fácilmente.')) {
+				fetch(`/admin/api/usuarios/${usuarioId}/banear`, {
+					method: 'POST'
+				})
+				.then(response => response.json())
+				.then(data => {
+					alert('Usuario baneado exitosamente');
+					cargarUsuarios();
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					alert('Error al banear usuario');
+				});
+			}
+		}
+
+		function eliminarUsuario(usuarioId) {
+			if (confirm('¿Desea inactivar este usuario? (Esta acción puede revertirse)')) {
+				fetch(`/admin/api/usuarios/${usuarioId}`, {
+					method: 'DELETE'
+				})
+				.then(response => response.json())
+				.then(data => {
+					alert('Usuario inactivado exitosamente');
+					cargarUsuarios();
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					alert('Error al inactivar usuario');
+				});
+			}
+		}
+
+		function abrirModalNuevoUsuario() {
+			alert('La creación de nuevos usuarios se realiza a través del formulario de registro (/signin)');
+		}
+
+		// Mostrar/ocultar campo de días de suspensión
+		document.getElementById('estadoEdit').addEventListener('change', function() {
+			if (this.value === 'suspendido') {
+				document.getElementById('diasSuspensionGroup').style.display = 'block';
+			} else {
+				document.getElementById('diasSuspensionGroup').style.display = 'none';
+			}
+		});
+	</script>
 </body>
 </html>
