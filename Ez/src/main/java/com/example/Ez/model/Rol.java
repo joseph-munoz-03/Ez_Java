@@ -74,8 +74,8 @@ public class Rol {
     }
 
     public enum TipoRol {
-        admin,
-        ingeniero,
-        usuario;
+        ADMIN,
+        INGENIERO,
+        USUARIO;
     }
 }

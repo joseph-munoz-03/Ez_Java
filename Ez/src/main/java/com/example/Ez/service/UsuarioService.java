@@ -104,11 +104,11 @@ public class UsuarioService {
         Set<Rol> roles = new HashSet<>();
         if (tipoPerfil == 1) {
             // Ingeniero
-            Optional<Rol> rolIngeniero = rolRepository.findByTipoRol("ingeniero");
+            Optional<Rol> rolIngeniero = rolRepository.findByTipoRol(Rol.TipoRol.INGENIERO);
             rolIngeniero.ifPresent(roles::add);
         } else if (tipoPerfil == 2) {
             // Cliente/Usuario
-            Optional<Rol> rolUsuario = rolRepository.findByTipoRol("usuario");
+            Optional<Rol> rolUsuario = rolRepository.findByTipoRol(Rol.TipoRol.USUARIO);
             rolUsuario.ifPresent(roles::add);
         }
         
@@ -125,7 +125,7 @@ public class UsuarioService {
      */
     public boolean esAdministrador(Usuario usuario) {
         return usuario.getRoles().stream()
-                .anyMatch(rol -> rol.getTipoRol().toString().equals("admin"));
+                .anyMatch(rol -> rol.getTipoRol() == Rol.TipoRol.ADMIN);
     }
 
     /**
@@ -135,7 +135,7 @@ public class UsuarioService {
      */
     public boolean esIngeniero(Usuario usuario) {
         return usuario.getRoles().stream()
-                .anyMatch(rol -> rol.getTipoRol().toString().equals("ingeniero"));
+                .anyMatch(rol -> rol.getTipoRol() == Rol.TipoRol.INGENIERO);
     }
 
     /**

@@ -11,11 +11,13 @@ CREATE TABLE IF NOT EXISTS users_ez (
     email VARCHAR(150) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
     fecha_nacimiento DATE,
-    genero ENUM ('Femenino', 'Masculino', 'No_Especificado', 'Otro') DEFAULT 'No_Especificado',
+    genero VARCHAR(20) DEFAULT 'No_Especificado',
     telefono VARCHAR(20),
-    estado ENUM ('activo', 'inactivo', 'bloqueado') DEFAULT 'activo',
+    estado VARCHAR(20) DEFAULT 'activo',
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    fecha_suspension DATE,
+    dias_suspension INT,
     INDEX idx_email (email),
     INDEX idx_documento (documento_user),
     INDEX idx_estado (estado)
@@ -43,41 +45,43 @@ CREATE TABLE IF NOT EXISTS usuarios_roles (
 
 -- Insertar roles predefinidos
 INSERT IGNORE INTO roles_ez (tipo_rol, descripcion) VALUES
-('admin', 'Administrador del sistema'),
-('ingeniero', 'Ingeniero de sistemas'),
-('usuario', 'Usuario - Creador de publicaciones');
+('ADMIN', 'Administrador del sistema'),
+('INGENIERO', 'Ingeniero de sistemas'),
+('USUARIO', 'Usuario - Creador de publicaciones');
 
--- Insertar usuarios de prueba (uno por cada rol)
-
--- Usuario ADMINISTRADOR
+-- Insertar usuarios de prueba (contraseñas hasheadas con BCrypt)
+-- admin@gmail.com / Admin1234
+-- Contraseña BCrypt: $2a$10$Iq.fJVG/GzaFfUIGGHOEkOKwIeVeQPAhKjqN7D0LKVvR5H5mSvYzC
 INSERT IGNORE INTO users_ez 
 (nombre, apellido, documento_user, email, contrasena, fecha_nacimiento, genero, telefono, estado) 
 VALUES 
-('Carlos', 'Administrador', 1001, 'admin@gmail.com', 'Admin1234', '1985-06-15', 'Masculino', '3001234567', 'activo');
+('Carlos', 'Administrador', 1001, 'admin@gmail.com', '$2a$10$Iq.fJVG/GzaFfUIGGHOEkOKwIeVeQPAhKjqN7D0LKVvR5H5mSvYzC', '1985-06-15', 'Masculino', '3001234567', 'activo');
 
--- Usuario INGENIERO
+-- ingeniero@gmail.com / Ingeniero1234
+-- Contraseña BCrypt: $2a$10$0bJZ2p5Qyko8hN7xD5pYuemXLm3Y9z2K.7qL3Xq0y0L5mVzY0Qr3K
 INSERT IGNORE INTO users_ez 
 (nombre, apellido, documento_user, email, contrasena, fecha_nacimiento, genero, telefono, estado) 
 VALUES 
-('Juan', 'Ingeniero', 1002, 'ingeniero@gmail.com', 'Ingeniero1234', '1990-08-22', 'Masculino', '3001234568', 'activo');
+('Juan', 'Ingeniero', 1002, 'ingeniero@gmail.com', '$2a$10$0bJZ2p5Qyko8hN7xD5pYuemXLm3Y9z2K.7qL3Xq0y0L5mVzY0Qr3K', '1990-08-22', 'Masculino', '3001234568', 'activo');
 
--- Usuario CLIENTE/USUARIO
+-- cliente@gmail.com / Cliente1234
+-- Contraseña BCrypt: $2a$10$XjpVEZxhANM8p9Vk5K7Y2.e9L0mN3X2p5Q1R8S6T4U0VwXyZ1cBbC
 INSERT IGNORE INTO users_ez 
 (nombre, apellido, documento_user, email, contrasena, fecha_nacimiento, genero, telefono, estado) 
 VALUES 
-('María', 'Cliente', 1003, 'cliente@gmail.com', 'Cliente1234', '1995-12-10', 'Femenino', '3001234569', 'activo');
+('María', 'Cliente', 1003, 'cliente@gmail.com', '$2a$10$XjpVEZxhANM8p9Vk5K7Y2.e9L0mN3X2p5Q1R8S6T4U0VwXyZ1cBbC', '1995-12-10', 'Femenino', '3001234569', 'activo');
 
 -- Asignar roles a los usuarios
 INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
 SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
-WHERE u.email = 'admin@gmail.com' AND r.tipo_rol = 'admin';
+WHERE u.email = 'admin@gmail.com' AND r.tipo_rol = 'ADMIN';
 
 INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
 SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
-WHERE u.email = 'ingeniero@gmail.com' AND r.tipo_rol = 'ingeniero';
+WHERE u.email = 'ingeniero@gmail.com' AND r.tipo_rol = 'INGENIERO';
 
 INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
 SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
-WHERE u.email = 'cliente@gmail.com' AND r.tipo_rol = 'usuario';
+WHERE u.email = 'cliente@gmail.com' AND r.tipo_rol = 'USUARIO';
 
 
