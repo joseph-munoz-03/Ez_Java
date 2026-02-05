@@ -20,7 +20,7 @@ public class AdminController {
 
     private boolean verificarAdmin(HttpSession session) {
         Object rol_usuario = session.getAttribute("rol_usuario");
-        return rol_usuario != null && rol_usuario.equals("admin");
+        return rol_usuario != null && rol_usuario.toString().equalsIgnoreCase("ADMIN");
     }
 
     @GetMapping("/dashboard")

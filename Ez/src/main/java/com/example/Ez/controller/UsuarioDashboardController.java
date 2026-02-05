@@ -14,7 +14,9 @@ public class UsuarioDashboardController {
      */
     private boolean verificarUsuario(HttpSession session) {
         Object id_cliente = session.getAttribute("id_cliente");
-        return id_cliente != null;
+        Object rol_usuario = session.getAttribute("rol_usuario");
+        return id_cliente != null && rol_usuario != null && 
+               rol_usuario.toString().equalsIgnoreCase("USUARIO");
     }
 
     @GetMapping("/dashboard")

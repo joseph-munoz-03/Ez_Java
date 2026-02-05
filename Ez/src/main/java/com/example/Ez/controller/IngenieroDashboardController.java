@@ -14,7 +14,7 @@ public class IngenieroDashboardController {
      */
     private boolean verificarIngeniero(HttpSession session) {
         Object rol_usuario = session.getAttribute("rol_usuario");
-        return rol_usuario != null && (rol_usuario.equals("ingeniero") || rol_usuario.equals("admin"));
+        return rol_usuario != null && (rol_usuario.toString().equalsIgnoreCase("INGENIERO") || rol_usuario.toString().equalsIgnoreCase("ADMIN"));
     }
 
     @GetMapping("/dashboard")
