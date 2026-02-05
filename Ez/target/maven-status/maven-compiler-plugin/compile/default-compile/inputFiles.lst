@@ -1,6 +1,14 @@
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\config\DataSourceConfig.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\config\SecurityConfig.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\AdminController.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\IngenieroDashboardController.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\PrincipalController.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\UsuarioController.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\UsuarioDashboardController.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\dto\UsuarioDTO.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\EzApplication.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\model\Rol.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\model\Usuario.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\repository\RolRepository.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\repository\UsuarioRepository.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\service\UsuarioService.java
