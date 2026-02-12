@@ -145,6 +145,10 @@
 			<p>Iniciar Sesión</p>
 		</div>
 		
+		<div th:if="${success}" class="alert alert-success" role="alert">
+			¡Registro exitoso! Ahora puedes iniciar sesión
+		</div>
+		
 		<div th:if="${error}" class="alert alert-danger" role="alert">
 			<strong>Error:</strong> <span th:text="${error}"></span>
 		</div>
@@ -188,8 +192,8 @@
 				emailError.textContent = 'El correo es obligatorio';
 				emailError.classList.add('show');
 				isValid = false;
-			} else if (!email.endsWith('@gmail.com')) {
-				emailError.textContent = 'El correo debe ser @gmail.com';
+			} else if (!email.includes('@')) {
+				emailError.textContent = 'El correo debe ser válido';
 				emailError.classList.add('show');
 				isValid = false;
 			} else {

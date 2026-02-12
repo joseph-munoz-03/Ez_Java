@@ -1,10 +1,13 @@
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\config\DataSourceConfig.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\config\SecurityConfig.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\AdminController.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\CustomErrorController.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\IngenieroDashboardController.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\PrincipalController.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\UsuarioController.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\controller\UsuarioDashboardController.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\converter\TipoRolConverter.java
+D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\dto\LoginDTO.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\dto\UsuarioDTO.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\EzApplication.java
 D:\Sena\Ez\Proyecto\Repositorio\Ez_Java\Ez\src\main\java\com\example\Ez\model\Rol.java

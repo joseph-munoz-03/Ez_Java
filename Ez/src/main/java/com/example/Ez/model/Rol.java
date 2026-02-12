@@ -1,6 +1,7 @@
 package com.example.Ez.model;
 
 import jakarta.persistence.*;
+import com.example.Ez.converter.TipoRolConverter;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ public class Rol {
     @Column(name = "id_rol")
     private Integer id;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = TipoRolConverter.class)
     @Column(name = "tipo_rol", nullable = false, unique = true)
     private TipoRol tipoRol;
 

@@ -7,6 +7,8 @@ import com.example.Ez.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -32,20 +36,30 @@ public class UsuarioService {
      * @param password Contraseña del usuario
      * @return Optional con el usuario si es válido, vacío en caso contrario
      */
-    /**
-     * Autentica un usuario por email y contraseña
-     * @param email Email del usuario
-     * @param password Contraseña del usuario
-     * @return Optional con el usuario si es válido, vacío en caso contrario
-     */
     public Optional<Usuario> autenticar(String email, String password) {
+        logger.debug("Iniciando autenticación para email: {}", email);
+        
         Optional<Usuario> usuario = usuarioRepository.findByEmail(email);
         
-        if (usuario.isPresent() && passwordEncoder.matches(password, usuario.get().getContrasena())) {
-            return usuario;
+        if (usuario.isPresent()) {
+            logger.debug("Usuario encontrado en BD: {}", email);
+            Usuario usuarioEncontrado = usuario.get();
+            logger.debug("Estado del usuario: {}", usuarioEncontrado.getEstado());
+            
+            boolean coincideContrasena = passwordEncoder.matches(password, usuarioEncontrado.getContrasena());
+            logger.debug("Contraseña correcta: {}", coincideContrasena);
+            
+            if (coincideContrasena) {
+                logger.info("Autenticación exitosa para usuario: {}", email);
+                return usuario;
+            } else {
+                logger.warn("Contraseña incorrecta para usuario: {}", email);
+                return Optional.empty();
+            }
+        } else {
+            logger.warn("Usuario no encontrado en BD: {}", email);
+            return Optional.empty();
         }
-        
-        return Optional.empty();
     }
 
     /**
@@ -64,58 +78,69 @@ public class UsuarioService {
                                     String password, Integer tipoPerfil, Integer genero, 
                                     LocalDate fechaNacimiento) {
         
-        // Verificar si el email ya existe
-        if (usuarioRepository.findByEmail(email).isPresent()) {
+        try {
+            // Verificar si el email ya existe
+            if (usuarioRepository.findByEmail(email).isPresent()) {
+                return null;
+            }
+            
+            // Verificar si la cédula ya existe
+            if (cedula != null && usuarioRepository.findByDocumentoUser(cedula).isPresent()) {
+                return null;
+            }
+            
+            Usuario usuario = new Usuario();
+            usuario.setNombre(nombre);
+            usuario.setApellido(apellido);
+            usuario.setDocumentoUser(cedula);
+            usuario.setEmail(email);
+            usuario.setContrasena(passwordEncoder.encode(password));
+            usuario.setFechaNacimiento(fechaNacimiento);
+            
+            // Mapear género
+            switch (genero) {
+                case 1:
+                    usuario.setGenero(Usuario.Genero.Masculino);
+                    break;
+                case 2:
+                    usuario.setGenero(Usuario.Genero.Femenino);
+                    break;
+                case 3:
+                    usuario.setGenero(Usuario.Genero.No_Especificado);
+                    break;
+                case 4:
+                    usuario.setGenero(Usuario.Genero.Otro);
+                    break;
+                default:
+                    usuario.setGenero(Usuario.Genero.No_Especificado);
+            }
+            
+            // Asignar rol según tipo de perfil
+            Set<Rol> roles = new HashSet<>();
+            if (tipoPerfil == 1) {
+                // Ingeniero
+                Optional<Rol> rolIngeniero = rolRepository.findByTipoRol(Rol.TipoRol.INGENIERO);
+                if (rolIngeniero.isPresent()) {
+                    roles.add(rolIngeniero.get());
+                }
+            } else if (tipoPerfil == 2) {
+                // Cliente/Usuario
+                Optional<Rol> rolUsuario = rolRepository.findByTipoRol(Rol.TipoRol.USUARIO);
+                if (rolUsuario.isPresent()) {
+                    roles.add(rolUsuario.get());
+                }
+            }
+            
+            // Asignar roles (pueden estar vacíos si no existen en la BD)
+            usuario.setRoles(roles);
+            usuario.setEstado(Usuario.Estado.activo);
+            
+            return usuarioRepository.save(usuario);
+        } catch (Exception e) {
+            System.err.println("Error al registrar usuario: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
-        
-        // Verificar si la cédula ya existe
-        if (cedula != null && usuarioRepository.findByDocumentoUser(cedula).isPresent()) {
-            return null;
-        }
-        
-        Usuario usuario = new Usuario();
-        usuario.setNombre(nombre);
-        usuario.setApellido(apellido);
-        usuario.setDocumentoUser(cedula);
-        usuario.setEmail(email);
-        usuario.setContrasena(passwordEncoder.encode(password));
-        usuario.setFechaNacimiento(fechaNacimiento);
-        
-        // Mapear género
-        switch (genero) {
-            case 1:
-                usuario.setGenero(Usuario.Genero.Masculino);
-                break;
-            case 2:
-                usuario.setGenero(Usuario.Genero.Femenino);
-                break;
-            case 3:
-                usuario.setGenero(Usuario.Genero.No_Especificado);
-                break;
-            case 4:
-                usuario.setGenero(Usuario.Genero.Otro);
-                break;
-            default:
-                usuario.setGenero(Usuario.Genero.No_Especificado);
-        }
-        
-        // Asignar rol según tipo de perfil
-        Set<Rol> roles = new HashSet<>();
-        if (tipoPerfil == 1) {
-            // Ingeniero
-            Optional<Rol> rolIngeniero = rolRepository.findByTipoRol(Rol.TipoRol.INGENIERO);
-            rolIngeniero.ifPresent(roles::add);
-        } else if (tipoPerfil == 2) {
-            // Cliente/Usuario
-            Optional<Rol> rolUsuario = rolRepository.findByTipoRol(Rol.TipoRol.USUARIO);
-            rolUsuario.ifPresent(roles::add);
-        }
-        
-        usuario.setRoles(roles);
-        usuario.setEstado(Usuario.Estado.activo);
-        
-        return usuarioRepository.save(usuario);
     }
 
     /**

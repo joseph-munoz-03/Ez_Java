@@ -1,6 +1,6 @@
 -- Crear base de datos Ez
-CREATE DATABASE IF NOT EXISTS Ez_database;
-USE Ez_database;
+CREATE DATABASE IF NOT EXISTS ez_dtbse;
+USE ez_dtbse;
 
 -- Tabla de usuarios
 CREATE TABLE IF NOT EXISTS users_ez (
@@ -71,6 +71,13 @@ INSERT IGNORE INTO users_ez
 VALUES 
 ('María', 'Cliente', 1003, 'cliente@gmail.com', '$2a$10$XjpVEZxhANM8p9Vk5K7Y2.e9L0mN3X2p5Q1R8S6T4U0VwXyZ1cBbC', '1995-12-10', 'Femenino', '3001234569', 'activo');
 
+-- esteban@gmail.com / Esteban1234
+-- Contraseña BCrypt: $2a$10$dXJ3SW6G7P50eexKGGyKK.N7Yz7n.3Yk4h3DKKW9p0J6xN0.K0vW
+INSERT IGNORE INTO users_ez 
+(nombre, apellido, documento_user, email, contrasena, fecha_nacimiento, genero, telefono, estado) 
+VALUES 
+('Esteban', 'Admin', 1004, 'esteban@gmail.com', '$2a$10$dXJ3SW6G7P50eexKGGyKK.N7Yz7n.3Yk4h3DKKW9p0J6xN0.K0vW', '1988-03-20', 'Masculino', '3001234570', 'activo');
+
 -- Asignar roles a los usuarios
 INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
 SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
@@ -83,5 +90,9 @@ WHERE u.email = 'ingeniero@gmail.com' AND r.tipo_rol = 'INGENIERO';
 INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
 SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
 WHERE u.email = 'cliente@gmail.com' AND r.tipo_rol = 'USUARIO';
+
+INSERT IGNORE INTO usuarios_roles (id_user, id_rol) 
+SELECT u.id_users, r.id_rol FROM users_ez u, roles_ez r 
+WHERE u.email = 'esteban@gmail.com' AND r.tipo_rol = 'ADMIN';
 
 
