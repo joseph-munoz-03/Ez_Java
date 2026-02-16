@@ -94,4 +94,28 @@ public class UsuarioDashboardController {
         
         return "usuario/calendario";
     }
+
+    @GetMapping("/proyectos")
+    public String proyectos(HttpSession session, Model model) {
+        if (!verificarUsuario(session)) {
+            return "redirect:/";
+        }
+        
+        String nombre_completo_cliente = (String) session.getAttribute("nombre_completo_cliente");
+        model.addAttribute("nombre_completo_cliente", nombre_completo_cliente);
+        
+        return "usuario/proyectos";
+    }
+
+    @GetMapping("/tareas")
+    public String tareas(HttpSession session, Model model) {
+        if (!verificarUsuario(session)) {
+            return "redirect:/";
+        }
+        
+        String nombre_completo_cliente = (String) session.getAttribute("nombre_completo_cliente");
+        model.addAttribute("nombre_completo_cliente", nombre_completo_cliente);
+        
+        return "usuario/tareas";
+    }
 }

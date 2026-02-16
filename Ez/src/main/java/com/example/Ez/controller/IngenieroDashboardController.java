@@ -90,4 +90,28 @@ public class IngenieroDashboardController {
         
         return "ingeniero/calendario";
     }
+
+    @GetMapping("/proyectos")
+    public String proyectos(HttpSession session, Model model) {
+        if (!verificarIngeniero(session)) {
+            return "redirect:/";
+        }
+        
+        String nombre_completo_ingeniero = (String) session.getAttribute("nombre_completo_ingeniero");
+        model.addAttribute("nombre_completo_ingeniero", nombre_completo_ingeniero);
+        
+        return "ingeniero/proyectos";
+    }
+
+    @GetMapping("/tareas")
+    public String tareas(HttpSession session, Model model) {
+        if (!verificarIngeniero(session)) {
+            return "redirect:/";
+        }
+        
+        String nombre_completo_ingeniero = (String) session.getAttribute("nombre_completo_ingeniero");
+        model.addAttribute("nombre_completo_ingeniero", nombre_completo_ingeniero);
+        
+        return "ingeniero/tareas";
+    }
 }

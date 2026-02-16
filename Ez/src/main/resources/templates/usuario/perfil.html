@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Perfil - Ez</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -13,6 +14,7 @@
 	
 	body {
 		background-color: #f8f9fa;
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	}
 	
 	.sidebar {
@@ -24,26 +26,46 @@
 		top: 0;
 		width: 250px;
 		color: white;
+		box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 	}
 	
 	.sidebar .logo {
 		text-align: center;
 		padding: 20px;
-		font-size: 40px;
-		font-weight: bold;
 		margin-bottom: 30px;
+		height: 80px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 10px;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 	}
 	
 	.sidebar .nav-link {
 		color: rgba(255, 255, 255, 0.8);
 		padding: 15px 20px;
+		display: block;
+		transition: all 0.3s ease;
 		text-decoration: none;
 	}
 	
-	.sidebar .nav-link.active {
-		background-color: rgba(255, 255, 255, 0.2);
+	.sidebar .nav-link:hover {
+		background-color: rgba(255, 255, 255, 0.1);
 		color: white;
+		padding-left: 30px;
+	}
+	
+	.sidebar .nav-link.active {
+		background-color: rgba(255, 255, 255, 0.35);
+		color: #fff;
+		font-weight: bold;
+		border-left: 4px solid #fff;
+		padding-left: 16px;
+		box-shadow: 
+			inset 0 0 15px rgba(255, 255, 255, 0.2),
+			0 0 20px rgba(255, 255, 255, 0.5),
+			0 0 40px rgba(255, 255, 255, 0.3);
 	}
 	
 	.main-content {
@@ -57,6 +79,43 @@
 		margin-bottom: 20px;
 		border-radius: 10px;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	
+	.topbar h1 {
+		margin: 0;
+		color: #333;
+		font-size: 28px;
+		font-weight: bold;
+	}
+	
+	.user-info {
+		display: flex;
+		align-items: center;
+		gap: 15px;
+	}
+	
+	.profile-btn {
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		background-color: var(--primary-color);
+		border: 2px solid #fff;
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 24px;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		text-decoration: none;
+	}
+	
+	.profile-btn:hover {
+		background-color: var(--secondary-color);
+		transform: scale(1.1);
 	}
 	
 	.profile-card {
@@ -109,6 +168,7 @@
 		border-radius: 5px;
 		font-weight: bold;
 		transition: all 0.3s ease;
+		width: 100%;
 	}
 	
 	.btn-save:hover {
@@ -117,6 +177,17 @@
 		transform: translateY(-2px);
 		box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
 	}
+	
+	@media (max-width: 768px) {
+		.sidebar {
+			width: 100%;
+			min-height: auto;
+			position: relative;
+		}
+		.main-content {
+			margin-left: 0;
+		}
+	}
 </style>
 </head>
 <body>
@@ -124,13 +195,10 @@
 		<div class="logo">E</div>
 		<nav class="nav flex-column">
 			<a href="/usuario/dashboard" class="nav-link">
-				<i class="fas fa-home"></i> Principal
-			</a>
-			<a href="/usuario/perfil" class="nav-link active">
-				<i class="fas fa-user"></i> Perfil
+				<i class="fas fa-home"></i> Inicio
 			</a>
 			<a href="/usuario/chat" class="nav-link">
-				<i class="fas fa-comments"></i> Chat
+				<i class="fas fa-comments\"></i> Chats
 			</a>
 			<a href="/usuario/marketplace" class="nav-link">
 				<i class="fas fa-store"></i> Marketplace
@@ -139,9 +207,12 @@
 				<i class="fas fa-file-contract"></i> Contratos
 			</a>
 			<a href="/usuario/calendario" class="nav-link">
-				<i class="fas fa-calendar"></i> Calendario
+				<i class="fas fa-calendar-alt"></i> Calendario
 			</a>
-			<hr style="border-color: rgba(255, 255, 255, 0.2);">
+			<hr style="border-color: rgba(255, 255, 255, 0.2); margin: 15px 10px;">
+			<a href="/usuario/perfil" class="nav-link active">
+				<i class="fas fa-user"></i> Perfil
+			</a>
 			<a href="/logout" class="nav-link">
 				<i class="fas fa-sign-out-alt"></i> Cerrar Sesión
 			</a>
@@ -151,6 +222,12 @@
 	<div class="main-content">
 		<div class="topbar">
 			<h1><i class="fas fa-user-circle"></i> Mi Perfil</h1>
+			<div class="user-info">
+				<span th:text="${nombre_completo_cliente}"></span>
+				<a href="/usuario/perfil" class="profile-btn" title="Mi Perfil">
+					<i class="fas fa-user"></i>
+				</a>
+			</div>
 		</div>
 		
 		<div class="profile-card">
