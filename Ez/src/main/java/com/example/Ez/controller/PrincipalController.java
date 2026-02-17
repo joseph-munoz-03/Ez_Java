@@ -161,7 +161,7 @@ public class PrincipalController {
             }
             
             // Validar tipo de perfil
-            if (tipoPerfil == null || (tipoPerfil != 1 && tipoPerfil != 2)) {
+            if (tipoPerfil == null || (tipoPerfil != 1 && tipoPerfil != 2 && tipoPerfil != 3)) {
                 model.addAttribute("error", "Tipo de perfil inválido");
                 return "principal/sign_in";
             }

@@ -172,7 +172,7 @@
 		}
 	</style>
 </head>
-<body>
+<body data-user-role="ingeniero">
 	<!-- SIDEBAR -->
 	<div class="sidebar">
 		<div class="logo">E</div>
@@ -198,16 +198,7 @@
 
 	<!-- MAIN CONTENT -->
 	<div class="main-content">
-		<!-- TOPBAR -->
-		<div class="topbar">
-			<h1><i class="fas fa-project-diagram"></i> Proyectos</h1>
-			<div class="user-info">
-				<span><i class="fas fa-user-circle"></i> <span th:text="${nombre_completo_ingeniero}"></span></span>
-				<a href="/ingeniero/perfil" class="profile-btn" title="Mi Perfil">
-					<i class="fas fa-user"></i>
-				</a>
-			</div>
-		</div>
+		<div id="header-container" data-page-title="Mis Proyectos"></div>
 
 		<!-- EMPTY STATE -->
 		<div class="empty-state">
@@ -219,5 +210,6 @@
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="/js/header-loader.js"></script>
 </body>
 </html>

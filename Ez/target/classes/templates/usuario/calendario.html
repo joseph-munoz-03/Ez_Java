@@ -167,7 +167,7 @@
 	}
 </style>
 </head>
-<body>
+<body data-user-role="usuario">
 	<div class="sidebar">
 		<div class="logo">E</div>
 		<nav class="nav flex-column">
@@ -197,15 +197,7 @@
 	</div>
 	
 	<div class="main-content">
-		<div class="topbar">
-			<h1><i class="fas fa-calendar-alt"></i> Mi Calendario</h1>
-			<div class="user-info">
-				<span th:text="${nombre_completo_cliente}"></span>
-				<a href="/usuario/perfil" class="profile-btn" title="Mi Perfil">
-					<i class="fas fa-user"></i>
-				</a>
-			</div>
-		</div>
+		<div id="header-container" data-page-title="Mi Calendario"></div>
 		
 		<div class="calendar-container">
 			<div class="calendar-header">
@@ -233,5 +225,9 @@
 			</div>
 		</div>
 	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="/js/header-loader.js"></script>
 </body>
 </html>

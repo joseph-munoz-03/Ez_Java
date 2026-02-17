@@ -129,6 +129,12 @@ public class UsuarioService {
                 if (rolUsuario.isPresent()) {
                     roles.add(rolUsuario.get());
                 }
+            } else if (tipoPerfil == 3) {
+                // Admin
+                Optional<Rol> rolAdmin = rolRepository.findByTipoRol(Rol.TipoRol.ADMIN);
+                if (rolAdmin.isPresent()) {
+                    roles.add(rolAdmin.get());
+                }
             }
             
             // Asignar roles (pueden estar vacíos si no existen en la BD)

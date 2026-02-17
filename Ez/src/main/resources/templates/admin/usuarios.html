@@ -40,7 +40,7 @@
 	}
 </style>
 </head>
-<body>
+<body data-user-role="admin">
 	<div class="sidebar">
 		<div style="text-align: center; padding: 20px; font-size: 40px; font-weight: bold; margin-bottom: 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">E</div>
 		<nav class="nav flex-column">
@@ -53,8 +53,11 @@
 	</div>
 	
 	<div class="main-content">
-		<h1>Gestionar Usuarios</h1>
+		<div id="header-container" data-page-title="Usuarios"></div>
 		<p>Aquí puedes listar, crear, editar y eliminar usuarios del sistema.</p>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="/js/header-loader.js"></script>
 </body>
 </html>

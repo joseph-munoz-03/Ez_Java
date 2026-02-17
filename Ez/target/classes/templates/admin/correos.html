@@ -80,7 +80,7 @@
 	}
 </style>
 </head>
-<body>
+<body data-user-role="admin">
 	<div class="sidebar">
 		<div class="logo">E</div>
 		<nav class="nav flex-column">
@@ -95,9 +95,7 @@
 	</div>
 	
 	<div class="main-content">
-		<div class="topbar">
-			<h1><i class="fas fa-envelope"></i> Sistema de Correos</h1>
-		</div>
+		<div id="header-container" data-page-title="Correos"></div>
 		
 		<div class="email-list">
 			<div class="email-item">
@@ -109,5 +107,8 @@
 			</div>
 		</div>
 	</div>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="/js/header-loader.js"></script>
 </body>
 </html>
