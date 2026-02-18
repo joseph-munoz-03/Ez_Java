@@ -97,7 +97,7 @@
 			<a href="/admin/marketplace" class="nav-link">Marketplace</a>
 			<a href="/admin/contratos" class="nav-link">Contratos</a>
 			<a href="/admin/correos" class="nav-link">Correos</a>
-			<a href="/logout" class="nav-link">Cerrar Sesión</a>
+			<button onclick="logout()" class="nav-link" style="border:none; background:none; padding:15px 20px; text-decoration:none; cursor:pointer; text-align:left; width:100%; font-family:inherit; font-size:inherit; color:rgba(255,255,255,0.8);">Cerrar Sesión</button>
 		</nav>
 	</div>
 	
@@ -117,5 +117,13 @@
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="/js/header-loader.js"></script>
+	<form id="logoutForm" action="/logout" method="POST" style="display:none;">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+	</form>
+	<script>
+		function logout() {
+			document.getElementById('logoutForm').submit();
+		}
+	</script>
 </body>
 </html>
