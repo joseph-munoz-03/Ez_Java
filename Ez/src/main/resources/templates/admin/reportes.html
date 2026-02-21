@@ -53,7 +53,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="/js/header-loader.js"></script>
 	<form id="logoutForm" action="/logout" method="POST" style="display:none;">
-		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		
 	</form>
 	<script>
 		function logout() {
