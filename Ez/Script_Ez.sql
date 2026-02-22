@@ -238,3 +238,4 @@ INSERT INTO bases_datos_ez (nombre) VALUES
 ('SQL Server'),
 ('MariaDB'),
 ('PostgreSQL');
+select * from users_ez;
