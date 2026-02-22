@@ -123,7 +123,7 @@ public class HeaderApiController {
     }
 
     /**
-     * Retorna el sidebar HTML para ingeniero
+     * Retorna el menú desplegable HTML para ingeniero
      */
     @GetMapping("/sidebar/ingeniero")
     @ResponseBody
@@ -132,32 +132,37 @@ public class HeaderApiController {
             return "<div class='alert alert-danger'>No autorizado</div>";
         }
 
-        StringBuilder sidebar = new StringBuilder();
-        sidebar.append("<div class=\"sidebar\">\n");
-        sidebar.append("  <div class=\"logo\">E</div>\n");
-        sidebar.append("  <nav class=\"nav flex-column\">\n");
+        StringBuilder menu = new StringBuilder();
+        menu.append("<div class=\"dropdown-menu-container\">\n");
+        menu.append("  <button class=\"dropdown-toggle-btn\" id=\"dropdownToggle\" onclick=\"toggleDropdownMenu()\">\n");
+        menu.append("    <i class=\"fas fa-bars\"></i>\n");
+        menu.append("  </button>\n");
+        menu.append("  <div class=\"dropdown-content\" id=\"dropdownContent\">\n");
+        menu.append("    <div class=\"dropdown-logo\">E</div>\n");
+        menu.append("    <nav class=\"dropdown-nav\">\n");
         
-        sidebar.append(crearNavLink("/ingeniero/dashboard", "dashboard", activePage, "<i class=\"fas fa-home\"></i> Inicio"));
-        sidebar.append(crearNavLink("/ingeniero/chat", "chat", activePage, "<i class=\"fas fa-comments\"></i> Chats"));
-        sidebar.append(crearNavLink("/ingeniero/marketplace", "marketplace", activePage, "<i class=\"fas fa-store\"></i> Marketplace"));
-        sidebar.append(crearNavLink("/ingeniero/contratos", "contratos", activePage, "<i class=\"fas fa-file-contract\"></i> Contratos"));
-        sidebar.append(crearNavLink("/ingeniero/calendario", "calendario", activePage, "<i class=\"fas fa-calendar-alt\"></i> Calendario"));
-        sidebar.append(crearNavLink("/ingeniero/proyectos", "proyectos", activePage, "<i class=\"fas fa-project-diagram\"></i> Proyectos"));
-        sidebar.append(crearNavLink("/ingeniero/tareas", "tareas", activePage, "<i class=\"fas fa-tasks\"></i> Tareas"));
+        menu.append(crearDropdownLink("/ingeniero/dashboard", "dashboard", activePage, "<i class=\"fas fa-home\"></i> Inicio"));
+        menu.append(crearDropdownLink("/ingeniero/chat", "chat", activePage, "<i class=\"fas fa-comments\"></i> Chats"));
+        menu.append(crearDropdownLink("/ingeniero/marketplace", "marketplace", activePage, "<i class=\"fas fa-store\"></i> Marketplace"));
+        menu.append(crearDropdownLink("/ingeniero/contratos", "contratos", activePage, "<i class=\"fas fa-file-contract\"></i> Contratos"));
+        menu.append(crearDropdownLink("/ingeniero/calendario", "calendario", activePage, "<i class=\"fas fa-calendar-alt\"></i> Calendario"));
+        menu.append(crearDropdownLink("/ingeniero/proyectos", "proyectos", activePage, "<i class=\"fas fa-project-diagram\"></i> Proyectos"));
+        menu.append(crearDropdownLink("/ingeniero/tareas", "tareas", activePage, "<i class=\"fas fa-tasks\"></i> Tareas"));
         
-        sidebar.append("    <hr style=\"border-color: rgba(255, 255, 255, 0.2); margin: 15px 10px;\">\n");
-        sidebar.append(crearNavLink("/ingeniero/perfil", "perfil", activePage, "<i class=\"fas fa-user\"></i> Perfil"));
-        sidebar.append("    <button onclick=\"logout()\" class=\"nav-link\" style=\"border:none; background:none; padding:15px 20px; text-decoration:none; cursor:pointer; text-align:left; width:100%; font-family:inherit; font-size:inherit; color:rgba(255,255,255,0.8);\">\n");
-        sidebar.append("      <i class=\"fas fa-sign-out-alt\"></i> Cerrar Sesión\n");
-        sidebar.append("    </button>\n");
-        sidebar.append("  </nav>\n");
-        sidebar.append("</div>\n");
+        menu.append("      <hr style=\"border-color: rgba(100, 100, 100, 0.2); margin: 10px 0;\">\n");
+        menu.append(crearDropdownLink("/ingeniero/perfil", "perfil", activePage, "<i class=\"fas fa-user\"></i> Perfil"));
+        menu.append("      <button onclick=\"logout()\" class=\"dropdown-link\" style=\"border:none; background:none; padding:12px 16px; text-decoration:none; cursor:pointer; text-align:left; width:100%; font-family:inherit; font-size:inherit; color:#333;\">\n");
+        menu.append("        <i class=\"fas fa-sign-out-alt\"></i> Cerrar Sesión\n");
+        menu.append("      </button>\n");
+        menu.append("    </nav>\n");
+        menu.append("  </div>\n");
+        menu.append("</div>\n");
 
-        return sidebar.toString();
+        return menu.toString();
     }
 
     /**
-     * Retorna el sidebar HTML para usuario
+     * Retorna el menú desplegable HTML para usuario
      */
     @GetMapping("/sidebar/usuario")
     @ResponseBody
@@ -166,32 +171,37 @@ public class HeaderApiController {
             return "<div class='alert alert-danger'>No autorizado</div>";
         }
 
-        StringBuilder sidebar = new StringBuilder();
-        sidebar.append("<div class=\"sidebar\">\n");
-        sidebar.append("  <div class=\"logo\">E</div>\n");
-        sidebar.append("  <nav class=\"nav flex-column\">\n");
+        StringBuilder menu = new StringBuilder();
+        menu.append("<div class=\"dropdown-menu-container\">\n");
+        menu.append("  <button class=\"dropdown-toggle-btn\" id=\"dropdownToggle\" onclick=\"toggleDropdownMenu()\">\n");
+        menu.append("    <i class=\"fas fa-bars\"></i>\n");
+        menu.append("  </button>\n");
+        menu.append("  <div class=\"dropdown-content\" id=\"dropdownContent\">\n");
+        menu.append("    <div class=\"dropdown-logo\">E</div>\n");
+        menu.append("    <nav class=\"dropdown-nav\">\n");
         
-        sidebar.append(crearNavLink("/usuario/dashboard", "dashboard", activePage, "<i class=\"fas fa-home\"></i> Inicio"));
-        sidebar.append(crearNavLink("/usuario/chat", "chat", activePage, "<i class=\"fas fa-comments\"></i> Chats"));
-        sidebar.append(crearNavLink("/usuario/marketplace", "marketplace", activePage, "<i class=\"fas fa-store\"></i> Marketplace"));
-        sidebar.append(crearNavLink("/usuario/contratos", "contratos", activePage, "<i class=\"fas fa-file-contract\"></i> Contratos"));
-        sidebar.append(crearNavLink("/usuario/calendario", "calendario", activePage, "<i class=\"fas fa-calendar-alt\"></i> Calendario"));
-        sidebar.append(crearNavLink("/usuario/proyectos", "proyectos", activePage, "<i class=\"fas fa-project-diagram\"></i> Proyectos"));
-        sidebar.append(crearNavLink("/usuario/tareas", "tareas", activePage, "<i class=\"fas fa-tasks\"></i> Tareas"));
+        menu.append(crearDropdownLink("/usuario/dashboard", "dashboard", activePage, "<i class=\"fas fa-home\"></i> Inicio"));
+        menu.append(crearDropdownLink("/usuario/chat", "chat", activePage, "<i class=\"fas fa-comments\"></i> Chats"));
+        menu.append(crearDropdownLink("/usuario/marketplace", "marketplace", activePage, "<i class=\"fas fa-store\"></i> Marketplace"));
+        menu.append(crearDropdownLink("/usuario/contratos", "contratos", activePage, "<i class=\"fas fa-file-contract\"></i> Contratos"));
+        menu.append(crearDropdownLink("/usuario/calendario", "calendario", activePage, "<i class=\"fas fa-calendar-alt\"></i> Calendario"));
+        menu.append(crearDropdownLink("/usuario/proyectos", "proyectos", activePage, "<i class=\"fas fa-project-diagram\"></i> Proyectos"));
+        menu.append(crearDropdownLink("/usuario/tareas", "tareas", activePage, "<i class=\"fas fa-tasks\"></i> Tareas"));
         
-        sidebar.append("    <hr style=\"border-color: rgba(255, 255, 255, 0.2); margin: 15px 10px;\">\n");
-        sidebar.append(crearNavLink("/usuario/perfil", "perfil", activePage, "<i class=\"fas fa-user\"></i> Perfil"));
-        sidebar.append("    <button onclick=\"logout()\" class=\"nav-link\" style=\"border:none; background:none; padding:15px 20px; text-decoration:none; cursor:pointer; text-align:left; width:100%; font-family:inherit; font-size:inherit; color:rgba(255,255,255,0.8);\">\n");
-        sidebar.append("      <i class=\"fas fa-sign-out-alt\"></i> Cerrar Sesión\n");
-        sidebar.append("    </button>\n");
-        sidebar.append("  </nav>\n");
-        sidebar.append("</div>\n");
+        menu.append("      <hr style=\"border-color: rgba(100, 100, 100, 0.2); margin: 10px 0;\">\n");
+        menu.append(crearDropdownLink("/usuario/perfil", "perfil", activePage, "<i class=\"fas fa-user\"></i> Perfil"));
+        menu.append("      <button onclick=\"logout()\" class=\"dropdown-link\" style=\"border:none; background:none; padding:12px 16px; text-decoration:none; cursor:pointer; text-align:left; width:100%; font-family:inherit; font-size:inherit; color:#333;\">\n");
+        menu.append("        <i class=\"fas fa-sign-out-alt\"></i> Cerrar Sesión\n");
+        menu.append("      </button>\n");
+        menu.append("    </nav>\n");
+        menu.append("  </div>\n");
+        menu.append("</div>\n");
 
-        return sidebar.toString();
+        return menu.toString();
     }
 
     /**
-     * Retorna el sidebar HTML para admin
+     * Retorna el menú desplegable HTML para admin
      */
     @GetMapping("/sidebar/admin")
     @ResponseBody
@@ -200,28 +210,51 @@ public class HeaderApiController {
             return "<div class='alert alert-danger'>No autorizado</div>";
         }
 
-        StringBuilder sidebar = new StringBuilder();
-        sidebar.append("<div class=\"sidebar\">\n");
-        sidebar.append("  <div class=\"logo\">E</div>\n");
-        sidebar.append("  <nav class=\"nav flex-column\">\n");
+        StringBuilder menu = new StringBuilder();
+        menu.append("<div class=\"dropdown-menu-container\">\n");
+        menu.append("  <button class=\"dropdown-toggle-btn\" id=\"dropdownToggle\" onclick=\"toggleDropdownMenu()\">\n");
+        menu.append("    <i class=\"fas fa-bars\"></i>\n");
+        menu.append("  </button>\n");
+        menu.append("  <div class=\"dropdown-content\" id=\"dropdownContent\">\n");
+        menu.append("    <div class=\"dropdown-logo\">E</div>\n");
+        menu.append("    <nav class=\"dropdown-nav\">\n");
         
-        sidebar.append(crearNavLink("/admin/dashboard", "dashboard", activePage, "<i class=\"fas fa-home\"></i> Inicio"));
-        sidebar.append(crearNavLink("/admin/usuarios", "usuarios", activePage, "<i class=\"fas fa-users\"></i> Usuarios"));
-        sidebar.append(crearNavLink("/admin/gestion_usuarios", "gestion_usuarios", activePage, "<i class=\"fas fa-user-cog\"></i> Gestión Usuarios"));
-        sidebar.append(crearNavLink("/admin/roles", "roles", activePage, "<i class=\"fas fa-user-tag\"></i> Roles"));
-        sidebar.append(crearNavLink("/admin/chat", "chat", activePage, "<i class=\"fas fa-comments\"></i> Chat"));
-        sidebar.append(crearNavLink("/admin/contratos", "contratos", activePage, "<i class=\"fas fa-file-contract\"></i> Contratos"));
-        sidebar.append(crearNavLink("/admin/marketplace", "marketplace", activePage, "<i class=\"fas fa-store\"></i> Marketplace"));
-        sidebar.append(crearNavLink("/admin/reportes", "reportes", activePage, "<i class=\"fas fa-chart-bar\"></i> Reportes"));
-        sidebar.append(crearNavLink("/admin/correos", "correos", activePage, "<i class=\"fas fa-envelope\"></i> Correos"));
+        menu.append(crearDropdownLink("/admin/dashboard", "dashboard", activePage, "<i class=\"fas fa-home\"></i> Inicio"));
+        menu.append(crearDropdownLink("/admin/usuarios", "usuarios", activePage, "<i class=\"fas fa-users\"></i> Usuarios"));
+        menu.append(crearDropdownLink("/admin/gestion_usuarios", "gestion_usuarios", activePage, "<i class=\"fas fa-user-cog\"></i> Gestión Usuarios"));
+        menu.append(crearDropdownLink("/admin/roles", "roles", activePage, "<i class=\"fas fa-user-tag\"></i> Roles"));
+        menu.append(crearDropdownLink("/admin/chat", "chat", activePage, "<i class=\"fas fa-comments\"></i> Chat"));
+        menu.append(crearDropdownLink("/admin/contratos", "contratos", activePage, "<i class=\"fas fa-file-contract\"></i> Contratos"));
+        menu.append(crearDropdownLink("/admin/marketplace", "marketplace", activePage, "<i class=\"fas fa-store\"></i> Marketplace"));
+        menu.append(crearDropdownLink("/admin/reportes", "reportes", activePage, "<i class=\"fas fa-chart-bar\"></i> Reportes"));
+        menu.append(crearDropdownLink("/admin/correos", "correos", activePage, "<i class=\"fas fa-envelope\"></i> Correos"));
         
-        sidebar.append("    <hr style=\"border-color: rgba(255, 255, 255, 0.2); margin: 15px 10px;\">\n");
-        sidebar.append("    <button onclick=\"logout()\" class=\"nav-link\" style=\"border:none; background:none; padding:15px 20px; text-decoration:none; cursor:pointer; text-align:left; width:100%; font-family:inherit; font-size:inherit; color:rgba(255,255,255,0.8);\">\n");
-        sidebar.append("      <i class=\"fas fa-sign-out-alt\"></i> Cerrar Sesión\n");
-        sidebar.append("    </button>\n");
-        sidebar.append("  </nav>\n");
-        sidebar.append("</div>\n");
+        menu.append("      <hr style=\"border-color: rgba(100, 100, 100, 0.2); margin: 10px 0;\">\n");
+        menu.append("      <button onclick=\"logout()\" class=\"dropdown-link\" style=\"border:none; background:none; padding:12px 16px; text-decoration:none; cursor:pointer; text-align:left; width:100%; font-family:inherit; font-size:inherit; color:#333;\">\n");
+        menu.append("        <i class=\"fas fa-sign-out-alt\"></i> Cerrar Sesión\n");
+        menu.append("      </button>\n");
+        menu.append("    </nav>\n");
+        menu.append("  </div>\n");
+        menu.append("</div>\n");
 
+        return menu.toString();
+    }
+
+    /**
+     * Método auxiliar para crear un enlace de navegación en dropdown con clase active
+     */
+    private String crearDropdownLink(String href, String linkId, String activePage, String icon) {
+        String isActive = activePage.equalsIgnoreCase(linkId) ? " active" : "";
+        return String.format(
+            "      <a href=\"%s\" class=\"dropdown-link%s\" data-page=\"%s\">\n" +
+            "        %s\n" +
+            "      </a>\n",
+            href, isActive, linkId, icon
+        );
+    }
+
+    /**
+     * Método auxiliar para crear un enlace de navegación con clase active (DEPRECADO - usar crearDropdownLink)
         return sidebar.toString();
     }
 

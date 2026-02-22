@@ -1,7 +1,30 @@
 /**
- * Script para cargar sidebars y headers dinámicamente desde API
- * Los sidebars se cargan según el rol del usuario y resaltan el menú activo
+ * Script para cargar menus desplegables y headers dinámicamente desde API
+ * Los menus se cargan según el rol del usuario y resaltan el menú activo
  */
+
+/**
+ * Abre/cierra el menú desplegable
+ */
+function toggleDropdownMenu() {
+    const dropdownContent = document.getElementById('dropdownContent');
+    if (dropdownContent) {
+        dropdownContent.classList.toggle('show');
+    }
+}
+
+/**
+ * Cierra el menú desplegable cuando se hace click afuera
+ */
+document.addEventListener('click', function(event) {
+    const dropdownContainer = document.querySelector('.dropdown-menu-container');
+    if (dropdownContainer && !dropdownContainer.contains(event.target)) {
+        const dropdownContent = document.getElementById('dropdownContent');
+        if (dropdownContent && dropdownContent.classList.contains('show')) {
+            dropdownContent.classList.remove('show');
+        }
+    }
+});
 
 /**
  * Obtiene el nombre de la página actual basado en la URL
@@ -14,7 +37,7 @@ function obtenerPaginaActiva() {
 }
 
 /**
- * Carga el sidebar del ingeniero dinámicamente
+ * Carga el menú desplegable del ingeniero dinámicamente
  */
 function cargarSidebarIngeniero() {
     const activePage = obtenerPaginaActiva();
@@ -34,12 +57,12 @@ function cargarSidebarIngeniero() {
             }
         })
         .catch(error => {
-            console.error('Error al cargar sidebar del ingeniero:', error);
+            console.error('Error al cargar menú del ingeniero:', error);
         });
 }
 
 /**
- * Carga el sidebar del usuario/cliente dinámicamente
+ * Carga el menú desplegable del usuario/cliente dinámicamente
  */
 function cargarSidebarUsuario() {
     const activePage = obtenerPaginaActiva();
@@ -59,12 +82,12 @@ function cargarSidebarUsuario() {
             }
         })
         .catch(error => {
-            console.error('Error al cargar sidebar del usuario:', error);
+            console.error('Error al cargar menú del usuario:', error);
         });
 }
 
 /**
- * Carga el sidebar del admin dinámicamente
+ * Carga el menú desplegable del admin dinámicamente
  */
 function cargarSidebarAdmin() {
     const activePage = obtenerPaginaActiva();
@@ -83,7 +106,7 @@ function cargarSidebarAdmin() {
             }
         })
         .catch(error => {
-            console.error('Error al cargar sidebar del admin:', error);
+            console.error('Error al cargar menú del admin:', error);
         });
 }
 
@@ -157,17 +180,36 @@ function cargarHeaderAdmin() {
 }
 
 /**
- * Resalta el enlace de navegación activo en el sidebar
+ * Resalta el enlace de navegación activo en el menú desplegable
  */
 function resaltarNavegacionActiva() {
     const activePage = obtenerPaginaActiva();
-    const navLinks = document.querySelectorAll('.nav-link[data-page]');
+    const navLinks = document.querySelectorAll('.dropdown-link[data-page]');
     
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('data-page') === activePage) {
             link.classList.add('active');
         }
+    });
+}
+
+/**
+ * Asigna evento de cierre del menú cuando se hace click en un enlace
+ */
+function asignarEventosNavegacion() {
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const navLinks = document.querySelectorAll('#sidebar-container .dropdown-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const dropdownContent = document.getElementById('dropdownContent');
+                    if (dropdownContent && dropdownContent.classList.contains('show')) {
+                        dropdownContent.classList.remove('show');
+                    }
+                });
+            });
+        }, 500);
     });
 }
 

@@ -2,8 +2,10 @@ package com.example.Ez.controller;
 
 import com.example.Ez.model.Usuario;
 import com.example.Ez.service.UsuarioService;
+import com.example.Ez.dto.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -119,12 +121,14 @@ public class AdminController {
      */
     @GetMapping("/api/usuarios")
     @ResponseBody
-    public ResponseEntity<List<Usuario>> obtenerTodosUsuarios(HttpSession session) {
+    public ResponseEntity<ApiResponse<List<Usuario>>> obtenerTodosUsuarios(HttpSession session) {
         if (!verificarAdmin(session)) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403)
+                .body(new ApiResponse<>(false, "No autorizado", "Acceso denegado"));
         }
         List<Usuario> usuarios = usuarioService.obtenerTodosUsuarios();
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok(
+            new ApiResponse<>(true, "Usuarios obtenidos exitosamente", usuarios));
     }
 
     /**
@@ -132,15 +136,17 @@ public class AdminController {
      */
     @GetMapping("/api/usuarios/filtrar")
     @ResponseBody
-    public ResponseEntity<List<Usuario>> filtrarUsuarios(
+    public ResponseEntity<ApiResponse<List<Usuario>>> filtrarUsuarios(
             @RequestParam(required = false) String criterio,
             @RequestParam(defaultValue = "nombre") String filtroTipo,
             HttpSession session) {
         if (!verificarAdmin(session)) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403)
+                .body(new ApiResponse<>(false, "No autorizado", "Acceso denegado"));
         }
         List<Usuario> usuarios = usuarioService.filtrarUsuarios(criterio, filtroTipo);
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok(
+            new ApiResponse<>(true, "Usuarios filtrados exitosamente", usuarios));
     }
 
     /**
@@ -148,13 +154,16 @@ public class AdminController {
      */
     @GetMapping("/api/usuarios/{id}")
     @ResponseBody
-    public ResponseEntity<Usuario> obtenerUsuario(@PathVariable Integer id, HttpSession session) {
+    public ResponseEntity<ApiResponse<Usuario>> obtenerUsuario(@PathVariable Integer id, HttpSession session) {
         if (!verificarAdmin(session)) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403)
+                .body(new ApiResponse<>(false, "No autorizado", "Acceso denegado"));
         }
         Optional<Usuario> usuario = usuarioService.obtenerPorId(Long.valueOf(id));
-        return usuario.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return usuario.map(u -> ResponseEntity.ok(
+                new ApiResponse<>(true, "Usuario obtenido exitosamente", u)))
+                .orElseGet(() -> ResponseEntity.status(404)
+                    .body(new ApiResponse<>(false, "Usuario no encontrado", "El usuario no existe")));
     }
 
     /**
@@ -162,7 +171,7 @@ public class AdminController {
      */
     @PutMapping("/api/usuarios/{id}")
     @ResponseBody
-    public ResponseEntity<Usuario> actualizarUsuario(
+    public ResponseEntity<ApiResponse<Usuario>> actualizarUsuario(
             @PathVariable Integer id,
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String apellido,
@@ -172,7 +181,8 @@ public class AdminController {
             @RequestParam(required = false) String estado,
             HttpSession session) {
         if (!verificarAdmin(session)) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403)
+                .body(new ApiResponse<>(false, "No autorizado", "Acceso denegado"));
         }
 
         Usuario.Genero generoEnum = null;
@@ -180,7 +190,8 @@ public class AdminController {
             try {
                 generoEnum = Usuario.Genero.valueOf(genero);
             } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.badRequest()
+                    .body(new ApiResponse<>(false, "Error en parámetros", "Género inválido"));
             }
         }
 
@@ -200,12 +211,15 @@ public class AdminController {
                                                                            usuario.getGenero());
                 }
             } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.badRequest()
+                    .body(new ApiResponse<>(false, "Error en parámetros", "Estado inválido"));
             }
         }
 
-        return usuarioActualizado != null ? ResponseEntity.ok(usuarioActualizado) 
-                                           : ResponseEntity.notFound().build();
+        return usuarioActualizado != null 
+            ? ResponseEntity.ok(new ApiResponse<>(true, "Usuario actualizado exitosamente", usuarioActualizado))
+            : ResponseEntity.status(404)
+                .body(new ApiResponse<>(false, "Usuario no encontrado", "El usuario no existe"));
     }
 
     /**
@@ -213,15 +227,19 @@ public class AdminController {
      */
     @PostMapping("/api/usuarios/{id}/suspender")
     @ResponseBody
-    public ResponseEntity<Usuario> suspenderUsuario(
+    public ResponseEntity<ApiResponse<Usuario>> suspenderUsuario(
             @PathVariable Integer id,
             @RequestParam Integer dias,
             HttpSession session) {
         if (!verificarAdmin(session)) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403)
+                .body(new ApiResponse<>(false, "No autorizado", "Acceso denegado"));
         }
         Usuario usuario = usuarioService.suspenderUsuario(id, dias);
-        return usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build();
+        return usuario != null 
+            ? ResponseEntity.ok(new ApiResponse<>(true, "Usuario suspendido exitosamente", usuario))
+            : ResponseEntity.status(404)
+                .body(new ApiResponse<>(false, "Usuario no encontrado", "El usuario no existe"));
     }
 
     /**
@@ -229,12 +247,16 @@ public class AdminController {
      */
     @PostMapping("/api/usuarios/{id}/reactivar")
     @ResponseBody
-    public ResponseEntity<Usuario> reactivarUsuario(@PathVariable Integer id, HttpSession session) {
+    public ResponseEntity<ApiResponse<Usuario>> reactivarUsuario(@PathVariable Integer id, HttpSession session) {
         if (!verificarAdmin(session)) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403)
+                .body(new ApiResponse<>(false, "No autorizado", "Acceso denegado"));
         }
         Usuario usuario = usuarioService.reactivarUsuario(id);
-        return usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build();
+        return usuario != null 
+            ? ResponseEntity.ok(new ApiResponse<>(true, "Usuario reactivado exitosamente", usuario))
+            : ResponseEntity.status(404)
+                .body(new ApiResponse<>(false, "Usuario no encontrado", "El usuario no existe"));
     }
 
     /**
@@ -242,12 +264,16 @@ public class AdminController {
      */
     @PostMapping("/api/usuarios/{id}/banear")
     @ResponseBody
-    public ResponseEntity<Usuario> banearUsuario(@PathVariable Integer id, HttpSession session) {
+    public ResponseEntity<ApiResponse<Usuario>> banearUsuario(@PathVariable Integer id, HttpSession session) {
         if (!verificarAdmin(session)) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403)
+                .body(new ApiResponse<>(false, "No autorizado", "Acceso denegado"));
         }
         Usuario usuario = usuarioService.banearUsuario(id);
-        return usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build();
+        return usuario != null 
+            ? ResponseEntity.ok(new ApiResponse<>(true, "Usuario baneado exitosamente", usuario))
+            : ResponseEntity.status(404)
+                .body(new ApiResponse<>(false, "Usuario no encontrado", "El usuario no existe"));
     }
 
     /**
@@ -255,11 +281,15 @@ public class AdminController {
      */
     @DeleteMapping("/api/usuarios/{id}")
     @ResponseBody
-    public ResponseEntity<Usuario> inactivarUsuario(@PathVariable Integer id, HttpSession session) {
+    public ResponseEntity<ApiResponse<Usuario>> inactivarUsuario(@PathVariable Integer id, HttpSession session) {
         if (!verificarAdmin(session)) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(403)
+                .body(new ApiResponse<>(false, "No autorizado", "Acceso denegado"));
         }
         Usuario usuario = usuarioService.inactivarUsuario(id);
-        return usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build();
+        return usuario != null 
+            ? ResponseEntity.ok(new ApiResponse<>(true, "Usuario inactivado exitosamente", usuario))
+            : ResponseEntity.status(404)
+                .body(new ApiResponse<>(false, "Usuario no encontrado", "El usuario no existe"));
     }
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<title>Gestión de Usuarios - Ez</title>
+<title>GestiÃ³n de Usuarios - Ez</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
@@ -210,7 +210,7 @@
 		display: inline-block;
 	}
 </style>
-</head> data-page-title="Gestión de Usuarios"
+</head> data-page-title="GestiÃ³n de Usuarios"
 <bbutton class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
 		<i class="fas fa-bars"></i>
 	</button>
@@ -219,23 +219,23 @@
 	</div>
 	
 	<div class="main-content">
-		<div id="header-container" data-page-title="Gestión de Usuarios"></div>
+		<div id="header-container" data-page-title="GestiÃ³n de Usuarios"></div>
 
-		<!-- Filtros de búsqueda -->
+		<!-- Filtros de bÃºsqueda -->
 		<div class="search-filters">
 			<div class="form-row">
 				<div class="form-group col-md-8">
 					<label for="searchInput"><i class="fas fa-search"></i> Buscar usuario:</label>
-					<input type="text" class="form-control" id="searchInput" placeholder="Escriba el usuario que busca (nombre, email, cédula, etc.)" onkeyup="filtrarUsuarios()">
+					<input type="text" class="form-control" id="searchInput" placeholder="Escriba el usuario que busca (nombre, email, cÃ©dula, etc.)" onkeyup="filtrarUsuarios()">
 				</div>
 				<div class="form-group col-md-4">
 					<label for="filterType">Filtrar por:</label>
 					<select class="form-control" id="filterType" onchange="filtrarUsuarios()">
 						<option value="nombre">Nombre</option>
 						<option value="email">Email</option>
-						<option value="cedula">Cédula</option>
+						<option value="cedula">CÃ©dula</option>
 						<option value="perfil">Perfil</option>
-						<option value="genero">Género</option>
+						<option value="genero">GÃ©nero</option>
 						<option value="estado">Estado</option>
 					</select>
 				</div>
@@ -254,9 +254,9 @@
 					<tr>
 						<th>ID</th>
 						<th>Nombre</th>
-						<th>Cédula</th>
+						<th>CÃ©dula</th>
 						<th>Email</th>
-						<th>Género</th>
+						<th>GÃ©nero</th>
 						<th>Perfil</th>
 						<th>Estado</th>
 						<th>Acciones</th>
@@ -294,11 +294,11 @@
 							<input type="email" class="form-control" id="emailEdit">
 						</div>
 						<div class="form-group">
-							<label for="telefonoEdit">Teléfono:</label>
+							<label for="telefonoEdit">TelÃ©fono:</label>
 							<input type="text" class="form-control" id="telefonoEdit">
 						</div>
 						<div class="form-group">
-							<label for="generoEdit">Género:</label>
+							<label for="generoEdit">GÃ©nero:</label>
 							<select class="form-control" id="generoEdit">
 								<option value="">Seleccionar</option>
 								<option value="Masculino">Masculino</option>
@@ -317,7 +317,7 @@
 							</select>
 						</div>
 						<div class="form-group" id="diasSuspensionGroup" style="display: none;">
-							<label for="diasSuspensionEdit">Días de Suspensión:</label>
+							<label for="diasSuspensionEdit">DÃ­as de SuspensiÃ³n:</label>
 							<input type="number" class="form-control" id="diasSuspensionEdit" min="1">
 						</div>
 					</form>
@@ -341,10 +341,10 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<p>¿Cuántos días desea suspender a este usuario?</p>
+					<p>Â¿CuÃ¡ntos dÃ­as desea suspender a este usuario?</p>
 					<input type="hidden" id="usuarioIdSuspender">
 					<div class="form-group">
-						<label for="diasSuspension">Días:</label>
+						<label for="diasSuspension">DÃ­as:</label>
 						<input type="number" class="form-control" id="diasSuspension" min="1" value="7">
 					</div>
 				</div>
@@ -484,7 +484,7 @@
 				document.getElementById('generoEdit').value = usuario.genero || '';
 				document.getElementById('estadoEdit').value = usuario.estado;
 
-				// Mostrar campo de días si está suspendido
+				// Mostrar campo de dÃ­as si estÃ¡ suspendido
 				if (usuario.estado === 'suspendido') {
 					document.getElementById('diasSuspensionGroup').style.display = 'block';
 					document.getElementById('diasSuspensionEdit').value = usuario.diasSuspension || 7;
@@ -537,7 +537,7 @@
 			})
 			.then(response => response.json())
 			.then(data => {
-				alert(`Usuario suspendido por ${dias} días`);
+				alert(`Usuario suspendido por ${dias} dÃ­as`);
 				$('#modalSuspenderUsuario').modal('hide');
 				cargarUsuarios();
 			})
@@ -548,7 +548,7 @@
 		}
 
 		function reactivarUsuario(usuarioId) {
-			if (confirm('¿Desea reactivar este usuario?')) {
+			if (confirm('Â¿Desea reactivar este usuario?')) {
 				fetch(`/admin/api/usuarios/${usuarioId}/reactivar`, {
 					method: 'POST'
 				})
@@ -565,7 +565,7 @@
 		}
 
 		function banearUsuario(usuarioId) {
-			if (confirm('¿Está seguro de que desea banear este usuario? Esta acción no se puede deshacer fácilmente.')) {
+			if (confirm('Â¿EstÃ¡ seguro de que desea banear este usuario? Esta acciÃ³n no se puede deshacer fÃ¡cilmente.')) {
 				fetch(`/admin/api/usuarios/${usuarioId}/banear`, {
 					method: 'POST'
 				})
@@ -582,7 +582,7 @@
 		}
 
 		function eliminarUsuario(usuarioId) {
-			if (confirm('¿Desea inactivar este usuario? (Esta acción puede revertirse)')) {
+			if (confirm('Â¿Desea inactivar este usuario? (Esta acciÃ³n puede revertirse)')) {
 				fetch(`/admin/api/usuarios/${usuarioId}`, {
 					method: 'DELETE'
 				})
@@ -599,10 +599,10 @@
 		}
 
 		function abrirModalNuevoUsuario() {
-			alert('La creación de nuevos usuarios se realiza a través del formulario de registro (/signin)');
+			alert('La creaciÃ³n de nuevos usuarios se realiza a travÃ©s del formulario de registro (/signin)');
 		}
 
-		// Mostrar/ocultar campo de días de suspensión
+		// Mostrar/ocultar campo de dÃ­as de suspensiÃ³n
 		document.getElementById('estadoEdit').addEventListener('change', function() {
 			if (this.value === 'suspendido') {
 				document.getElementById('diasSuspensionGroup').style.display = 'block';

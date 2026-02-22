@@ -18,8 +18,13 @@
 			background-color: #f8f9fa;
 		}
 
-		/* Botón hamburger flotante */
-		.sidebar-toggle {
+		/* Contenedor del menú desplegable */
+		.dropdown-menu-container {
+			position: relative;
+		}
+		
+		/* Botón para abrir/cerrar menú dropdown */
+		.dropdown-toggle-btn {
 			position: fixed;
 			top: 20px;
 			left: 20px;
@@ -35,44 +40,75 @@
 			transition: all 0.3s ease;
 		}
 
-		.sidebar-toggle:hover {
+		.dropdown-toggle-btn:hover {
 			transform: scale(1.1);
 			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 		}
-
-		/* Sidebar flotante */
-		.sidebar {
-			background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
-			min-height: 100vh;
-			padding: 20px 0;
+		
+		/* Contenido del menú desplegable - flotante y blanco */
+		.dropdown-content {
 			position: fixed;
-			left: -280px;
-			top: 0;
-			width: 250px;
-			color: white;
-			box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+			top: 65px;
+			left: 20px;
+			background: white;
+			border-radius: 8px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 			z-index: 999;
-			transition: left 0.3s ease;
-		}
-
-		.sidebar.show {
-			left: 0;
-		}
-
-		/* Overlay cuando sidebar está abierto */
-		.sidebar-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(0, 0, 0, 0.5);
-			z-index: 998;
+			width: 250px;
+			max-height: 600px;
+			overflow-y: auto;
 			display: none;
+			padding: 0;
+			border: 1px solid #e0e0e0;
 		}
-
-		.sidebar-overlay.show {
+		
+		.dropdown-content.show {
 			display: block;
+		}
+		
+		/* Logo en el menú dropdown */
+		.dropdown-logo {
+			text-align: center;
+			padding: 20px;
+			font-size: 40px;
+			font-weight: bold;
+			margin-bottom: 10px;
+			border-bottom: 1px solid #e0e0e0;
+			color: #0066cc;
+		}
+		
+		/* Enlaces del menú dropdown */
+		.dropdown-nav {
+			padding: 10px 0;
+		}
+		
+		.dropdown-link {
+			color: #333;
+			padding: 12px 16px;
+			display: block;
+			transition: all 0.3s ease;
+			text-decoration: none;
+			border: none;
+			background: none;
+			cursor: pointer;
+			text-align: left;
+			width: 100%;
+			font-family: inherit;
+			font-size: inherit;
+		}
+		
+		.dropdown-link:hover {
+			background-color: #f5f5f5;
+			color: #0066cc;
+			padding-left: 20px;
+		}
+		
+		.dropdown-link.active {
+			background-color: #f0f0f0;
+			color: #0066cc;
+			border-left: 4px solid #0066cc;
+			padding-left: 12px;
+			font-weight: 600;
 		}
 
 		.sidebar .logo {
@@ -214,15 +250,7 @@
 	</style>
 </head>
 <body data-user-role="ingeniero" data-page-title="Dashboard">
-	<!-- BOTÓN HAMBURGER FLOTANTE -->
-	<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
-		<i class="fas fa-bars"></i>
-	</button>
-
-	<!-- OVERLAY PARA CERRAR SIDEBAR -->
-	<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-	<!-- SIDEBAR DINÁMICO FLOTANTE -->
+	<!-- CONTENEDOR DEL MENÚ DESPLEGABLE -->
 	<div id="sidebar-container"></div>
 
 	<!-- MAIN CONTENT -->
@@ -246,27 +274,5 @@
 		function logout() {
 			document.getElementById('logoutForm').submit();
 		}
-
-		function toggleSidebar() {
-			const sidebar = document.getElementById('sidebar-container').querySelector('.sidebar');
-			const overlay = document.getElementById('sidebarOverlay');
-			
-			if (sidebar) {
-				sidebar.classList.toggle('show');
-				overlay.classList.toggle('show');
-			}
-		}
-
-		// Cerrar sidebar al hacer click en un enlace
-		document.addEventListener('DOMContentLoaded', function() {
-			setTimeout(function() {
-				const navLinks = document.querySelectorAll('#sidebar-container .nav-link');
-				navLinks.forEach(link => {
-					link.addEventListener('click', function() {
-						toggleSidebar();
-					});
-				});
-			}, 500);
-		});
 	</script>
 </body>
