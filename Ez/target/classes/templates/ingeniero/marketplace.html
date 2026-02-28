@@ -202,7 +202,10 @@
 </style>
 </head>
 <body data-user-role="ingeniero" data-page-title="Marketplace">
-	<!-- CONTENEDOR DEL MENÚ DESPLEGABLE -->
+	<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+		<i class="fas fa-bars"></i>
+	</button>
+	<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 	<div id="sidebar-container"></div>
 	
 	<div class="main-content">

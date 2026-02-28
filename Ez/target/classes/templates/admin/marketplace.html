@@ -16,13 +16,24 @@
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	}
 	
-	/* Contenedor del menú desplegable */
-	.dropdown-menu-container {
-		position: relative;
+	.sidebar {
+		background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+		min-height: 100vh;
+		padding: 20px 0;
+		position: fixed;
+		left: -280px;
+		top: 0;
+		width: 250px;
+		color: white;
+		z-index: 999;
+		transition: left 0.3s ease;
 	}
 	
-	/* Botón para abrir/cerrar menú dropdown */
-	.dropdown-toggle-btn {
+	.sidebar.show {
+		left: 0;
+	}
+	
+	.sidebar-toggle {
 		position: fixed;
 		top: 20px;
 		left: 20px;
@@ -30,95 +41,54 @@
 		background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
 		border: none;
 		color: white;
-		padding: 12px 16px;
-		border-radius: 8px;
+		padding: 10px 15px;
+		border-radius: 5px;
 		cursor: pointer;
-		font-size: 20px;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		font-size: 18px;
 		transition: all 0.3s ease;
 	}
 	
-	.dropdown-toggle-btn:hover {
+	.sidebar-toggle:hover {
 		transform: scale(1.1);
-		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 	}
 	
-	/* Contenido del menú desplegable - flotante y blanco */
-	.dropdown-content {
+	.sidebar-overlay {
 		position: fixed;
-		top: 65px;
-		left: 20px;
-		background: white;
-		border-radius: 8px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-		z-index: 999;
-		width: 250px;
-		max-height: 600px;
-		overflow-y: auto;
-		display: none;
-		padding: 0;
-		border: 1px solid #e0e0e0;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0);
+		z-index: 500;
+		opacity: 0;
+		pointer-events: none;
+		transition: all 0.3s ease;
 	}
 	
-	.dropdown-content.show {
-		display: block;
-		animation: slideDown 0.3s ease;
+	.sidebar-overlay.show {
+		background: rgba(0, 0, 0, 0.5);
+		opacity: 1;
+		pointer-events: auto;
 	}
 	
-	@keyframes slideDown {
-		from {
-			opacity: 0;
-			transform: translateY(-10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-	
-	/* Logo en el menú dropdown */
-	.dropdown-logo {
+	.sidebar .logo {
 		text-align: center;
 		padding: 20px;
 		font-size: 40px;
 		font-weight: bold;
-		margin-bottom: 10px;
-		border-bottom: 1px solid #e0e0e0;
-		color: var(--primary-color);
+		margin-bottom: 30px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 	}
 	
-	/* Enlaces del menú dropdown */
-	.dropdown-nav {
-		padding: 10px 0;
-	}
-	
-	.dropdown-link {
-		color: #333;
-		padding: 12px 16px;
-		display: block;
-		transition: all 0.3s ease;
+	.sidebar .nav-link {
+		color: rgba(255, 255, 255, 0.8);
+		padding: 15px 20px;
 		text-decoration: none;
-		border: none;
-		background: none;
-		cursor: pointer;
-		text-align: left;
-		width: 100%;
-		font-family: inherit;
-		font-size: inherit;
 	}
 	
-	.dropdown-link:hover {
-		background-color: #f5f5f5;
-		color: var(--primary-color);
-		padding-left: 20px;
-	}
-	
-	.dropdown-link.active {
-		background-color: #f0f0f0;
-		color: var(--primary-color);
-		border-left: 4px solid var(--primary-color);
-		padding-left: 12px;
-		font-weight: 600;
+	.sidebar .nav-link.active {
+		background-color: rgba(255, 255, 255, 0.2);
+		color: white;
 	}
 	
 	.main-content {
@@ -171,7 +141,10 @@
 </style>
 </head> data-page-title="Marketplace"
 <body data-user-role="admin">
-	<!-- CONTENEDOR DEL MENÚ DESPLEGABLE -->
+	<button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+		<i class="fas fa-bars"></i>
+	</button>
+	<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 	<div id="sidebar-container"></div>
 	
 	<div class="main-content">
@@ -207,4 +180,24 @@
 	</script>
 </body>
 </html>
+	
+		function toggleSidebar() {
+			const sidebar = document.getElementById('sidebar-container').querySelector('.sidebar');
+			const overlay = document.getElementById('sidebarOverlay');
+			if (sidebar) {
+				sidebar.classList.toggle('show');
+				overlay.classList.toggle('show');
+			}
+		}
+		
+		document.addEventListener('DOMContentLoaded', function() {
+			setTimeout(function() {
+				const navLinks = document.querySelectorAll('#sidebar-container .nav-link');
+				navLinks.forEach(link => {
+					link.addEventListener('click', function() {
+						toggleSidebar();
+					});
+				});
+			}, 500);
+		});
 	
