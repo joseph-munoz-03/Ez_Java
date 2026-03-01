@@ -79,6 +79,24 @@ public class Usuario {
     )
     private Set<Rol> roles = new HashSet<>();
 
+    @Column(name = "nombre_usuario", unique = true, length = 100)
+    private String nombreUsuario;
+
+    @Column(name = "foto_perfil")
+    private String fotoPerfil;
+
+    @Column(name = "descripcion", columnDefinition = "TEXT")
+    private String descripcion;
+
+    @Column(name = "etiquetas", columnDefinition = "JSON")
+    private String etiquetas;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "usuario")
+    private Saldo saldo;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "usuario")
+    private ColorConfiguracion colorConfiguracion;
+
     @PrePersist
     protected void onCreate() {
         this.fechaRegistro = LocalDateTime.now();
@@ -230,5 +248,53 @@ public class Usuario {
 
     public void setDiasSuspension(Integer diasSuspension) {
         this.diasSuspension = diasSuspension;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(String fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getEtiquetas() {
+        return etiquetas;
+    }
+
+    public void setEtiquetas(String etiquetas) {
+        this.etiquetas = etiquetas;
+    }
+
+    public Saldo getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(Saldo saldo) {
+        this.saldo = saldo;
+    }
+
+    public ColorConfiguracion getColorConfiguracion() {
+        return colorConfiguracion;
+    }
+
+    public void setColorConfiguracion(ColorConfiguracion colorConfiguracion) {
+        this.colorConfiguracion = colorConfiguracion;
     }
 }
